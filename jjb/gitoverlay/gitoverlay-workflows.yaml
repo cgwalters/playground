@@ -1,0 +1,92 @@
+- job:
+    name: 'fedora-atomic-rpmdistro-gitoverlay-trigger'
+    defaults: fedora-atomic-rpmdistro-gitoverlay
+    node: master
+    scm:
+      - git:
+          url: https://github.com/cgwalters/fedora-atomic-next
+          basedir: fedora-atomic-next
+          skip-tag: true
+    triggers:
+      - pollscm: "H/15 * * * *"
+    builders:
+      - shell: |
+          #!/bin/bash
+
+          echo "GIT_BRANCH: $GIT_BRANCH"
+
+          if [ "`echo $GIT_BRANCH | grep master`" != "" ]
+          then
+              echo "Change in rawhide"
+              echo "BRANCH=rawhide" > $WORKSPACE/GIT_BRANCH.txt
+          elif [ "`echo $GIT_BRANCH | grep f22`" != "" ]
+          then
+              echo 'change in f22'
+              echo "BRANCH=f22" > $WORKSPACE/GIT_BRANCH.txt
+          else
+              echo 'Branch not applicable'
+          fi
+
+      - conditional-step:
+          condition-kind: file-exists
+          condition-filename: GIT_BRANCH.txt
+          condition-basedir: workspace
+          steps:
+            - inject:
+                properties-file: $WORKSPACE/GIT_BRANCH.txt
+    publishers:
+      - conditional-publisher:
+          - condition-kind: file-exists
+            condition-filename: GIT_BRANCH.txt
+            condition-basedir: workspace
+            action:
+            - trigger-parameterized-builds:
+                - project: 'fedora-atomic-tree-compose'
+                  condition: 'SUCCESS'
+                  predefined-parameters: |
+                    release=$BRANCH
+                    config=/srv/fedora-atomic/$BRANCH/fedora-atomic/fedora-atomic-docker-host.json
+
+- job:
+    name: 'fedora-atomic-tree-compose'
+    defaults: fedora-atomic
+    node: 'fedora-atomic-tree-compose'
+    parameters:
+        - choice:
+            name: release
+            choices:
+              - rawhide
+              - f22
+            description: |
+              Release of fedora
+        - string:
+            name: datadir
+            default: /srv/fedora-atomic
+            description: |
+              Data directory where the tree will be generated, config, etc.
+        - choice:
+            name: configdir
+            choices:
+              - /srv/fedora-atomic/rawhide/fedora-atomic/
+              - /srv/fedora-atomic/f22/fedora-atomic/
+            description: |
+              Tree compose configuration directory
+
+    builders:
+      - shell: |
+          #sudo rpm-ostree compose tree --repo=${datadir}/${release}/repo/ ${config}
+
+          if [ "${release}" == "f22" ]
+          then
+             export rel_ver=22
+          else
+             export rel_ver=rawhide
+          fi
+
+          sudo sed -i -e 's/mirrorlist=/#mirrorlist/' -e "s|#baseurl=.*|baseurl=http://dl.fedoraproject.org/pub/fedora/linux/development/${release}/x86_64/os|" ${WORKSPACE}/config.tmp/fedora-${rel_ver}.repo
+
+          sudo rpm-ostree compose tree --repo=${datadir}/${release}/repo/ ${WORKSPACE}/config.tmp/fedora-atomic-docker-host.json
+
+
+          sudo ln -sf ${datadir}/${release}/repo/ ${WORKSPACE}/${release}
+

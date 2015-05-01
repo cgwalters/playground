@@ -1,0 +1,7 @@
+- defaults:
+    name: fedora-atomic-rpmdistro-gitoverlay
+    description: |
+        Managed by Jenkins Job Builder. Do not edit via web.
+    logrotate:
+      numToKeep: 30
+      artifactNumToKeep: 15
