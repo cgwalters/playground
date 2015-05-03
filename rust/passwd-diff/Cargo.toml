@@ -1,0 +1,12 @@
+[package]
+name = "passwd-diff"
+version = "0.0.1"
+authors = ["Colin Walters <walters@verbum.org>"]
+description = "Tool to compare passwd files"
+repository = "https://github.com/cgwalters/playground"
+readme = "README.md"
+license = "Apache-2.0/MIT"
+
+[dependencies]
+docopt = "*"
+rustc-serialize = "*"
