@@ -18,13 +18,19 @@ use std::fs::File;
 use docopt::Docopt;
 
 static USAGE: &'static str = "
-Usage: passwd-diff <passwd> <group>
+Usage:
+  passwd-diff --pw-gr-check <passwd> <group>
+  passwd-diff --pw-gr-diff <passwd> <group> <new-passwd> <new-group>
 ";
 
 #[derive(RustcDecodable, Debug)]
 struct Args {
+    flag_pw_gr_check: bool,
+    flag_pw_gr_diff: bool,
     arg_passwd: String,
-    arg_group: String
+    arg_group: String,
+    arg_new_passwd: String,
+    arg_new_group: String
 }
 
 trait PwGrEntry {
@@ -128,12 +134,9 @@ fn parse_group_path(path: &str) -> HashMap<String, GrEntry> {
     return parse_pw_or_gr_file::<GrEntry>(s, Box::new(parse_gr_entry));
 }
 
-fn main() {
-    let args: Args = Docopt::new(USAGE)
-                            .and_then(|d| d.decode())
-                            .unwrap_or_else(|e| e.exit());
-    let pw = parse_passwd_path(&args.arg_passwd);
-    let gr = parse_group_path(&args.arg_group);
+fn pw_gr_check(passwd: &str, group: &str) {
+    let pw = parse_passwd_path(passwd);
+    let gr = parse_group_path(group);
     for (key, val) in pw.iter() {
         match gr.get(key) {
             Some(v) => {
@@ -143,5 +146,73 @@ fn main() {
             },
             None => { println!("group file missing {}", key) }
         }
+    }
+    for (key, _) in gr.iter() {
+        match pw.get(key) {
+            None => println!("passwd file missing {}", key),
+            _ => ()
+        }
+    }
+}
+
+fn pw_diff(passwd: &str, new_passwd: &str) {
+    let old_pw = parse_passwd_path(passwd);
+    let new_pw = parse_passwd_path(new_passwd);
+
+    for (key, oval) in old_pw.iter() {
+        match new_pw.get(key) {
+            Some(nval) => {
+                if oval.uid != nval.uid {
+                    println!("error: mismatch on passwd uid for '{}': {} != {}", key, oval.uid, nval.uid);
+                }
+                if oval.gid != nval.gid {
+                    println!("error: mismatch on passwd gid for '{}': {} != {}", key, oval.gid, nval.gid);
+                }
+            },
+            None => { println!("error: user removed: {}", key) }
+        }
+    } 
+    for (key, _) in new_pw.iter() {
+        match old_pw.get(key) {
+            Some(_) => (),
+            None => { println!("user added: {}", key) }
+        }
+    } 
+}
+
+fn gr_diff(group: &str, new_group: &str) {
+    let old_gr = parse_group_path(group);
+    let new_gr = parse_group_path(new_group);
+
+    for (key, oval) in old_gr.iter() {
+        match new_gr.get(key) {
+            Some(nval) => {
+                if oval.gid != nval.gid {
+                    println!("error: mismatch on group gid for '{}': {} != {}", key, oval.gid, nval.gid);
+                }
+                if oval.gid != nval.gid {
+                    println!("error: mismatch on group gid for '{}': {} != {}", key, oval.gid, nval.gid);
+                }
+            },
+            None => { println!("error: group removed: {}", key) }
+        }
+    } 
+    for (key, _) in new_gr.iter() {
+        match old_gr.get(key) {
+            Some(_) => (),
+            None => { println!("group added: {}", key) }
+        }
+    } 
+}
+
+fn main() {
+    let args: Args = Docopt::new(USAGE)
+                            .and_then(|d| d.decode())
+                            .unwrap_or_else(|e| e.exit());
+    if args.flag_pw_gr_check {
+        pw_gr_check(&args.arg_passwd, &args.arg_group);
+    } else if args.flag_pw_gr_diff {
+        pw_diff(&args.arg_passwd, &args.arg_new_passwd);
+ 	gr_diff(&args.arg_group, &args.arg_new_group);
     }
 }
