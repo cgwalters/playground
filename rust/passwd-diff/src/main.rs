@@ -1,6 +1,7 @@
 // Copyright 2015 Colin Walters <walters@verbum.org>
 //
-// Compare two passwd/group files and report on differences.
+// Sanity check two passwd/group files, or
+// compare two passwd/group files and report on differences.
 //
 // Licensed under the Apache License, Version 2.0 <LICENSE-APACHE or
 // http://www.apache.org/licenses/LICENSE-2.0> or the MIT license
@@ -12,6 +13,7 @@ extern crate rustc_serialize;
 extern crate docopt;
 
 use std::collections::HashMap;
+use std::collections::hash_map::Entry::{Occupied, Vacant};
 use std::io::BufRead;
 use std::fs::File;
 
@@ -137,6 +139,8 @@ fn parse_group_path(path: &str) -> HashMap<String, GrEntry> {
 fn pw_gr_check(passwd: &str, group: &str) {
     let pw = parse_passwd_path(passwd);
     let gr = parse_group_path(group);
+    let mut pw_reverse : HashMap<u32, &str> = HashMap::new();
+    let mut gr_reverse : HashMap<u32, &str> = HashMap::new();
     for (key, val) in pw.iter() {
         match gr.get(key) {
             Some(v) => {
@@ -146,11 +150,19 @@ fn pw_gr_check(passwd: &str, group: &str) {
             },
             None => { println!("group file missing {}", key) }
         }
+        match pw_reverse.entry(val.uid) {
+            Occupied(entry) => { println!("uid duplicated between {} and {}", entry.get(), key) },
+	    Vacant(entry) => { entry.insert(&key); () }
+        }
     }
-    for (key, _) in gr.iter() {
+    for (key, val) in gr.iter() {
         match pw.get(key) {
             None => println!("passwd file missing {}", key),
             _ => ()
+        }
+        match gr_reverse.entry(val.gid) {
+            Occupied(entry) => { println!("gid duplicated between {} and {}", entry.get(), key) },
+	    Vacant(entry) => { entry.insert(&key); () }
         }
     }
 }
