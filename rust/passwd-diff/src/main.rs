@@ -1,3 +1,4 @@
+// -*- indent-tabs-mode: nil -*-
 // Copyright 2015 Colin Walters <walters@verbum.org>
 //
 // Sanity check two passwd/group files, or
@@ -152,7 +153,7 @@ fn pw_gr_check(passwd: &str, group: &str) {
         }
         match pw_reverse.entry(val.uid) {
             Occupied(entry) => { println!("uid duplicated between {} and {}", entry.get(), key) },
-	    Vacant(entry) => { entry.insert(&key); () }
+            Vacant(entry) => { entry.insert(&key); () }
         }
     }
     for (key, val) in gr.iter() {
@@ -162,7 +163,7 @@ fn pw_gr_check(passwd: &str, group: &str) {
         }
         match gr_reverse.entry(val.gid) {
             Occupied(entry) => { println!("gid duplicated between {} and {}", entry.get(), key) },
-	    Vacant(entry) => { entry.insert(&key); () }
+            Vacant(entry) => { entry.insert(&key); () }
         }
     }
 }
@@ -225,6 +226,6 @@ fn main() {
         pw_gr_check(&args.arg_passwd, &args.arg_group);
     } else if args.flag_pw_gr_diff {
         pw_diff(&args.arg_passwd, &args.arg_new_passwd);
- 	gr_diff(&args.arg_group, &args.arg_new_group);
+        gr_diff(&args.arg_group, &args.arg_new_group);
     }
 }
