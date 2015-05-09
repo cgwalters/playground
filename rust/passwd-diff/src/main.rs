@@ -157,10 +157,6 @@ fn pw_gr_check(passwd: &str, group: &str) {
         }
     }
     for (key, val) in gr.iter() {
-        match pw.get(key) {
-            None => println!("passwd file missing {}", key),
-            _ => ()
-        }
         match gr_reverse.entry(val.gid) {
             Occupied(entry) => { println!("gid duplicated between {} and {}", entry.get(), key) },
             Vacant(entry) => { entry.insert(&key); () }
