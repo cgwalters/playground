@@ -1,0 +1,7 @@
+[package]
+name = "readline"
+version = "0.1.0"
+authors = ["Colin Walters <walters@verbum.org>"]
+
+[dependencies]
+regex = "0.1.8"
