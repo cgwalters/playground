@@ -18,7 +18,9 @@ fn main() {
     }
 
     let mut freqs: Vec<_> = freqs.iter().collect();
-    freqs.sort_by(|&(worda, counta), &(wordb, countb)| {
+    freqs.sort_by(|&a, &b| {
+        let (worda, counta) = a;
+        let (wordb, countb) = b;
         (counta, worda).cmp(&(countb, wordb)).reverse()
     });
     
