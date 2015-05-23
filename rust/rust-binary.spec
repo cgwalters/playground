@@ -2,8 +2,8 @@
 # binaries.  Based on the spec file extracted from the
 # SRPM in https://copr.fedoraproject.org/coprs/fabiand/rust-binary/builds/
 
-%global rust_version 1.0.0.beta.3
-%global rust_version_upstream 1.0.0-beta.3
+%global rust_version 1.0.0
+%global rust_version_upstream 1.0.0
 %global archsuffix x86_64-unknown-linux-gnu
 
 %global debug_package %{nil}
