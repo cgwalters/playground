@@ -17,7 +17,7 @@ Summary:        The Rust Programming Language (official static build)
 
 License:        ASL 2.0, MIT
 URL:            http://www.rust-lang.org
-Source0:        http://static.rust-lang.org/dist/rust-%{rust_version_upstream}-%{archsuffix}.tar.gz
+Source0:        https://static.rust-lang.org/dist/rust-%{rust_version_upstream}-%{archsuffix}.tar.gz
 
 ExclusiveArch:  x86_64
 
