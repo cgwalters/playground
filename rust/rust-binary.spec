@@ -2,8 +2,8 @@
 # binaries.  Based on the spec file extracted from the
 # SRPM in https://copr.fedoraproject.org/coprs/fabiand/rust-binary/builds/
 
-%global rust_version 1.0.0
-%global rust_version_upstream 1.0.0
+%global rust_version 1.1.0
+%global rust_version_upstream 1.1.0
 %global archsuffix x86_64-unknown-linux-gnu
 
 %global debug_package %{nil}
@@ -12,7 +12,7 @@
 
 Name:           rust-binary
 Version:        %{rust_version}
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The Rust Programming Language (official static build)
 
 License:        ASL 2.0, MIT
@@ -73,6 +73,9 @@ rm %{buildroot}/%{_libdir}/rustlib/install.log
 
 
 %changelog
+* Sat Jun 27 2015 Colin Walters <walters@verbum.org> - 1.1.0-2
+- Update to 1.1.0
+
 * Sun Dec 28 2014 Fabian Deutsch <fabiand@fedoraproject.org> - 0.12.0-1
 - Update to 0.12.0
 
