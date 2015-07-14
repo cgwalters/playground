@@ -22,13 +22,14 @@ auth = v2.Password(auth_url=os.environ['OS_AUTH_URL'],
 sess = session.Session(auth=auth)
 nova = client.Client('2', session=sess)
 
+address_hosts={}
 for server in nova.servers.list():
     if args.prefix and not server.name.startswith(args.prefix):
         continue
-    addresses=[]
     for (network,ips) in server.networks.iteritems():
         for ip in ips:
             if (args.net_prefix is None or 
                 ip.startswith(args.net_prefix)):
-                addresses.append(ip)
-        print('{0} {1}  # id={2}'.format(server.name,' '.join(addresses),server.id))
+                address_hosts[ip] = server
+for address,server in address_hosts.iteritems():
+    print('{0} {1}  # id={2}'.format(address, server.name, server.id))
