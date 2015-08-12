@@ -1,0 +1,77 @@
+<job>
+  <whiteboard>
+    Atomic test
+  </whiteboard>
+    <recipeSet>
+      <recipe>
+	<kickstart>
+auth --enableshadow --passalgo=sha512
+zerombr
+firstboot --disable
+keyboard --vckeymap=us --xlayouts='us'
+lang en_US.UTF-8
+selinux --enforcing
+rootpw --lock --iscrypted locked
+# Only temporary
+user --groups=wheel --name=walters --password=12345 --iscrypted --gecos="Colin Walters"
+firewall --disabled
+timezone America/New_York --isUtc
+
+{% snippet 'install_method' %}
+{% snippet 'rhts_devices' %}
+{% snippet 'lab_env' %}
+{% snippet 'boot_order' %}
+{% snippet 'network' %}
+
+# Services
+services --disabled=network
+services --enabled=sshd,NetworkManager
+
+# Network
+
+bootloader --location=mbr --boot-drive=sda
+clearpart --all --initlabel --disklabel=gpt --drives=sda
+part /boot --size=300 --fstype="ext4"
+part pv.01 --grow
+volgroup vg01 pv.01
+logvol / --grow --fstype="xfs" --name=root --vgname=vg --size=3000
+
+%packages
+@base
+@core
+%end
+
+%post --erroronfail
+passwd -l walters
+%end
+	</kickstart>
+
+	<distroRequires>
+          <and>
+            <distro_arch op="=" value="x86_64"/>
+            <distro_name op="=" value="RHEL-7.1"/>
+            <distro_method op="=" value="http"/>
+	  </and>
+	</distroRequires>
+	
+        <hostRequires>
+	  <and>
+	    <hypervisor op="=" value=""/>
+	    <or>
+	      <arch op="=" value="x86_64"/>
+	      <arch op="=" value="i386,x86_64"/>
+	    </or>
+	    <memory op=">" value="8000"/>
+	  </and>
+        </hostRequires>
+
+        <task name="/distribution/install" role="STANDALONE">
+          <params>
+                <param name="My_ENV_VAR" value="foo"/>
+           </params>
+         </task>
+	<task name="/distribution/reservesys" role="STANDALONE">
+        </task>
+      </recipe>
+    </recipeSet>
+</job>
