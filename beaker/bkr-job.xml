@@ -5,8 +5,8 @@
     <recipeSet>
       <recipe>
 	<kickstart>
+text
 auth --enableshadow --passalgo=sha512
-zerombr
 firstboot --disable
 keyboard --vckeymap=us --xlayouts='us'
 lang en_US.UTF-8
@@ -17,40 +17,62 @@ user --groups=wheel --name=walters --password=12345 --iscrypted --gecos="Colin W
 firewall --disabled
 timezone America/New_York --isUtc
 
+{{ mode|default('cmdline') }}
 {% snippet 'install_method' %}
-{% snippet 'rhts_devices' %}
-{% snippet 'lab_env' %}
-{% snippet 'boot_order' %}
 {% snippet 'network' %}
 
 # Services
 services --disabled=network
 services --enabled=sshd,NetworkManager
 
-# Network
-
-bootloader --location=mbr --boot-drive=sda
-clearpart --all --initlabel --disklabel=gpt --drives=sda
+zerombr
+clearpart --all --initlabel
 part /boot --size=300 --fstype="ext4"
 part pv.01 --grow
 volgroup vg01 pv.01
-logvol / --grow --fstype="xfs" --name=root --vgname=vg --size=3000
+logvol / --grow --fstype="xfs" --name=root --vgname=vg01 --size=3000
+part swap --recommended
 
-%packages
+reboot
+
+%packages --ignoremissing
 @base
 @core
 %end
 
 %post --erroronfail
 passwd -l walters
+mkdir -m 0700 -p ~walters/.ssh
+restorecon ~walters/.ssh
+echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOQkQHeKan3X+g1jILw4a3KtcfEIED0kByKGWookU7ev walters+2015-general@verbum.org" >>~walters/.ssh/authorized_keys
+chmod 0700 ~walters/.ssh/authorized_keys
+chown -R -h walters:walters ~walters/.ssh
+
+echo 'walters ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/walters
+
+# More secure ssh defaults: https://stribika.github.io/2015/01/04/secure-secure-shell.html
+# Also, a tweak for Fedora/Red Hat OpenSSH to *only* generate ED25519 host keys.
+echo 'AUTOCREATE_SERVER_KEYS=ED25519' >> /etc/sysconfig/sshd
+for line in \
+  "KexAlgorithms curve25519-sha256@libssh.org" \
+  "Ciphers chacha20-poly1305@openssh.com" \
+  "MACs hmac-sha2-512-etm@openssh.com" \
+  "GSSAPIAuthentication no" \
+  "PasswordAuthentication no"; do \
+    if ! grep -q "${line}" /etc/ssh/sshd_config; then \
+      echo ${line} >> /etc/ssh/sshd_config; \
+    fi \
+  done
 %end
 	</kickstart>
+        <packages/>
 
 	<distroRequires>
           <and>
-            <distro_arch op="=" value="x86_64"/>
-            <distro_name op="=" value="RHEL-7.1"/>
-            <distro_method op="=" value="http"/>
+	    <distro_family op="=" value="RedHatEnterpriseLinux7"/>
+	    <distro_tag op="=" value="RELEASED"/>
+	    <distro_variant op="=" value="Server"/>
+	    <distro_arch op="=" value="x86_64"/>
 	  </and>
 	</distroRequires>
 	
