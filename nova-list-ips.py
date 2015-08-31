@@ -12,6 +12,7 @@ from novaclient import client
 parser = argparse.ArgumentParser(description='Generate /etc/hosts data from OpenStack nova')
 parser.add_argument('--net-prefix', action='store', help='Only emit IP addresses with this prefix')
 parser.add_argument('--prefix', action='store', help='Only emit hosts with this prefix')
+parser.add_argument('--format', action='store', default='hosts', help='One of: hosts,dnsmasq')
 args = parser.parse_args()
 
 
@@ -32,4 +33,11 @@ for server in nova.servers.list():
                 ip.startswith(args.net_prefix)):
                 address_hosts[ip] = server
 for address,server in address_hosts.iteritems():
-    print('{0} {1}  # id={2}'.format(address, server.name, server.id))
+    fmt = getattr(args, 'format')
+    if fmt == 'hosts':
+        print('{0} {1}  # id={2}'.format(address, server.name, server.id))
+    elif fmt == 'dnsmasq':
+        print('address=/{0}/{1}'.format(server.name, address))
+    else:
+        print("Unknown format: {0}".format(fmt))
+    
