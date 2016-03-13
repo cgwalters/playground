@@ -1,3 +1,5 @@
+test
+
 #define _USE_GNU 1
 #include <fcntl.h>
 #include <stdio.h>
