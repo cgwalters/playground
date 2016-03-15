@@ -4,7 +4,7 @@ script: test '!' -f broken.txt
 
 notifications:
   webhooks: http://escher.verbum.org:54856/travis
-  email: falase
+  email: false
 
 branches:
   only:
