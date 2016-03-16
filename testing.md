@@ -4,3 +4,4 @@ I'm testing Homu: https://github.com/barosl/homu
 - Just retrying again
 - Now with branch protection on master
 - Now trying to retitle issue for closing
+- Change test comment link to have merge status
