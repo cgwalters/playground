@@ -5,3 +5,4 @@ I'm testing Homu: https://github.com/barosl/homu
 - Now with branch protection on master
 - Now trying to retitle issue for closing
 - Change test comment link to have merge status
+- New Homu version based on Servo
