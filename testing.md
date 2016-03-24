@@ -6,3 +6,4 @@ I'm testing Homu: https://github.com/barosl/homu
 - Now trying to retitle issue for closing
 - Change test comment link to have merge status
 - New Homu version based on Servo (actually built this time)
+- Tweaked some Homu patches
