@@ -7,4 +7,4 @@ I'm testing Homu: https://github.com/barosl/homu
 - Change test comment link to have merge status
 - New Homu version based on Servo (actually built this time)
 - Tweaked some Homu patches
-- Now testing status-only reporting
+- Now testing status-only reporting (hopefully successfully!)
