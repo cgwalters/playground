@@ -9,3 +9,4 @@ I'm testing Homu: https://github.com/barosl/homu
 - Tweaked some Homu patches
 - Now testing status-only reporting (hopefully successfully!)
 - Now after an update
+- Now in CentOS CI
