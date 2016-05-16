@@ -11,3 +11,4 @@ I'm testing Homu: https://github.com/barosl/homu
 - Now after an update
 - Now in CentOS CI
 - Custom email
+- CentOS CI again!
