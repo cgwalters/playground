@@ -10,3 +10,4 @@ I'm testing Homu: https://github.com/barosl/homu
 - Now testing status-only reporting (hopefully successfully!)
 - Now after an update
 - CentOS CI is starting to work.
+- Now testing PR
