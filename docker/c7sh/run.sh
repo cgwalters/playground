@@ -18,3 +18,6 @@ cp /etc/skel/.bash* /root
 useradd walters
 usermod -a -G wheel,mock walters
 
+ln -s /srv/walters/src ~walters/src
+chown -R -h walters: ~walters
+
