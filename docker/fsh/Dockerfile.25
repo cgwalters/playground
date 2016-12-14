@@ -1,0 +1,4 @@
+FROM fedora:24
+RUN for x in /etc/yum.repos.d/*.repo; do sed -i -e s,gpgcheck=1,gpgcheck=0, ${x}; done; yum -y --setopt=releasever=25 distro-sync
+ADD run.sh /root/run.sh
+RUN /root/run.sh && rm -f /root/run.sh
