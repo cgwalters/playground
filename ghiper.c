@@ -54,9 +54,14 @@ callback.
 
 */
 
+#define _GNU_SOURCE
 
-#include <glib.h>
+#include <gio/gio.h>
+#include <gio/gunixinputstream.h>
 #include <sys/stat.h>
+#include <sys/types.h>
+#include <stdint.h>
+#include <stdbool.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
@@ -65,7 +70,7 @@ callback.
 #include <curl/curl.h>
 
 
-#define MSG_OUT g_print   /* Change to "g_error" to write to stderr */
+#define MSG_OUT g_printerr   /* Change to "g_error" to write to stderr */
 #define SHOW_VERBOSE 0    /* Set to non-zero for libcurl messages */
 #define SHOW_PROGRESS 0   /* Set to non-zero to enable progress callback */
 
@@ -74,11 +79,11 @@ callback.
 /* Global information, common to all connections */
 typedef struct _GlobalInfo {
   CURLM *multi;
+  GError **error;
   guint timer_event;
-  int still_running;
+  int curl_running;
+  bool input_eof;
 } GlobalInfo;
-
-
 
 /* Information associated with a specific easy handle */
 typedef struct _ConnInfo {
@@ -134,7 +139,7 @@ static void check_multi_info(GlobalInfo *g)
   CURL *easy;
   CURLcode res;
 
-  MSG_OUT("REMAINING: %d\n", g->still_running);
+  MSG_OUT("CURL RUNNING: %d\n", g->curl_running);
   while ((msg = curl_multi_info_read(g->multi, &msgs_left))) {
     if (msg->msg == CURLMSG_DONE) {
       easy = msg->easy_handle;
@@ -159,9 +164,10 @@ static gboolean timer_cb(gpointer data)
   CURLMcode rc;
 
   rc = curl_multi_socket_action(g->multi,
-                                  CURL_SOCKET_TIMEOUT, 0, &g->still_running);
+				CURL_SOCKET_TIMEOUT, 0, &g->curl_running);
   mcode_or_die("timer_cb: curl_multi_socket_action", rc);
   check_multi_info(g);
+  g->timer_event = 0;
   return FALSE;
 }
 
@@ -196,15 +202,15 @@ static gboolean event_cb(GIOChannel *ch, GIOCondition condition, gpointer data)
     (condition & G_IO_IN ? CURL_CSELECT_IN : 0) |
     (condition & G_IO_OUT ? CURL_CSELECT_OUT : 0);
 
-  rc = curl_multi_socket_action(g->multi, fd, action, &g->still_running);
+  rc = curl_multi_socket_action(g->multi, fd, action, &g->curl_running);
   mcode_or_die("event_cb: curl_multi_socket_action", rc);
 
   check_multi_info(g);
-  if(g->still_running) {
+  if(g->curl_running > 0) {
     return TRUE;
   } else {
     MSG_OUT("last transfer done, kill timeout\n");
-    if (g->timer_event) { g_source_remove(g->timer_event); }
+    if (g->timer_event) { g_source_remove(g->timer_event); g->timer_event = 0; }
     return FALSE;
   }
 }
@@ -342,114 +348,76 @@ static void new_conn(char *url, GlobalInfo *g )
 
 
 /* This gets called by glib whenever data is received from the fifo */
-static gboolean fifo_cb (GIOChannel *ch, GIOCondition condition, gpointer data)
+static void
+on_read_line (GObject *src,
+              GAsyncResult *res,
+              gpointer data)
 {
-  #define BUF_SIZE 1024
-  gsize len, tp;
-  gchar *buf, *tmp, *all=NULL;
-  GIOStatus rv;
+  GDataInputStream *din = (GDataInputStream*) src;
+  GlobalInfo *g = (GlobalInfo*)data;
+  gsize len;
+  g_autoptr(GError) local_error = NULL;
+  g_autofree char *line =
+    g_data_input_stream_read_line_finish (din, res, &len, &local_error);
 
-  do {
-    GError *err=NULL;
-    rv = g_io_channel_read_line (ch,&buf,&len,&tp,&err);
-    if ( buf ) {
-      if (tp) { buf[tp]='\0'; }
-      new_conn(buf,(GlobalInfo*)data);
-      g_free(buf);
-    } else {
-      buf = g_malloc(BUF_SIZE+1);
-      while (TRUE) {
-        buf[BUF_SIZE]='\0';
-        g_io_channel_read_chars(ch,buf,BUF_SIZE,&len,&err);
-        if (len) {
-          buf[len]='\0';
-          if (all) {
-            tmp=all;
-            all=g_strdup_printf("%s%s", tmp, buf);
-            g_free(tmp);
-          } else {
-            all = g_strdup(buf);
-          }
-        } else {
-           break;
-        }
-      }
-      if (all) {
-        new_conn(all,(GlobalInfo*)data);
-        g_free(all);
-      }
-      g_free(buf);
+  if (local_error)
+    {
+      g_propagate_error (g->error, g_steal_pointer (&local_error));
     }
-    if ( err ) {
-      g_error("fifo_cb: %s", err->message);
-      g_free(err);
-      break;
+  else if (line == NULL)
+    {
+      fprintf (stderr, "EOF\n");
+      g->input_eof = true;
+      g_main_context_wakeup (NULL);
     }
-  } while ( (len) && (rv == G_IO_STATUS_NORMAL) );
-  return TRUE;
+  else
+    {
+     new_conn (line, g);
+     g_data_input_stream_read_line_async (din, G_PRIORITY_DEFAULT, NULL,
+                                          on_read_line, g);
+    }
 }
-
-
-
-
-int init_fifo(void)
-{
- struct stat st;
- const char *fifo = "hiper.fifo";
- int socket;
-
- if (lstat (fifo, &st) == 0) {
-  if ((st.st_mode & S_IFMT) == S_IFREG) {
-   errno = EEXIST;
-   perror("lstat");
-   exit (1);
-  }
- }
-
- unlink (fifo);
- if (mkfifo (fifo, 0600) == -1) {
-  perror("mkfifo");
-  exit (1);
- }
-
- socket = open (fifo, O_RDWR | O_NONBLOCK, 0);
-
- if (socket == -1) {
-  perror("open");
-  exit (1);
- }
- MSG_OUT("Now, pipe some URL's into > %s\n", fifo);
-
- return socket;
-
-}
-
-
-
 
 int main(int argc, char **argv)
 {
   GlobalInfo *g;
   CURLMcode rc;
-  GMainLoop*gmain;
-  int fd;
-  GIOChannel* ch;
-  g=g_malloc0(sizeof(GlobalInfo));
+  GMainContext *ctx = g_main_context_default ();
+  g_autoptr(GError) err = NULL;
+  GError **error = &err;
+  GCancellable *cancellable = NULL;
+  g_autoptr(GInputStream) sin = NULL;
+  g_autoptr(GDataInputStream) din = NULL;
 
-  fd=init_fifo();
-  ch=g_io_channel_unix_new(fd);
-  g_io_add_watch(ch,G_IO_IN,fifo_cb,g);
-  gmain=g_main_loop_new(NULL,FALSE);
+  g = g_new0 (GlobalInfo, 1);
+  g->error = error;
+
+  sin = g_unix_input_stream_new (0, false);
+  din = g_data_input_stream_new (sin);
+
+  g_data_input_stream_read_line_async (din, G_PRIORITY_DEFAULT, NULL,
+                                       on_read_line, g);
+
   g->multi = curl_multi_init();
   curl_multi_setopt(g->multi, CURLMOPT_SOCKETFUNCTION, sock_cb);
   curl_multi_setopt(g->multi, CURLMOPT_SOCKETDATA, g);
   curl_multi_setopt(g->multi, CURLMOPT_TIMERFUNCTION, update_timeout_cb);
   curl_multi_setopt(g->multi, CURLMOPT_TIMERDATA, g);
 
-  /* we don't call any curl_multi_socket*() function yet as we have no handles
-     added! */
+  while (g->timer_event > 0 ||
+         g->curl_running > 0 ||
+         !g->input_eof)
+    g_main_context_iteration (ctx, TRUE);
 
-  g_main_loop_run(gmain);
+  fprintf (stderr, "Complete.\n");
+
   curl_multi_cleanup(g->multi);
+
+ out:
+  if (err)
+    {
+      fprintf (stderr, "%s\n", err->message);
+      exit (1);
+    }
   return 0;
 }
