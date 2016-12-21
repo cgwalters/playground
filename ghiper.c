@@ -324,6 +324,7 @@ static void new_conn(char *url, GlobalInfo *g )
   }
   conn->global = g;
   conn->url = g_strdup(url);
+  curl_easy_setopt(conn->easy, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_2_0);
   curl_easy_setopt(conn->easy, CURLOPT_URL, conn->url);
   curl_easy_setopt(conn->easy, CURLOPT_WRITEFUNCTION, write_cb);
   curl_easy_setopt(conn->easy, CURLOPT_WRITEDATA, &conn);
