@@ -3,7 +3,6 @@ install: true
 script: test '!' -f broken.txt
 
 notifications:
-  webhooks: http://escher.verbum.org:54857/travis
   email: false
 
 branches:

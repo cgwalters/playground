@@ -1,0 +1,14 @@
+branches:
+    - master
+    - auto
+    - try
+
+required: true
+
+container:
+    image: fedora:25
+
+tests:
+    - test '!' -f broken.txt
+
+timeout: 30m
