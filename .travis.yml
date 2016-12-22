@@ -4,7 +4,3 @@ script: test '!' -f broken.txt
 
 notifications:
   email: false
-
-branches:
-  only:
-    - auto
