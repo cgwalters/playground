@@ -11,3 +11,4 @@ I'm testing Homu: https://github.com/barosl/homu
 - Now after an update
 - CentOS CI is starting to work.
 - Now using ghprb (take 2)
+- Auth testing
