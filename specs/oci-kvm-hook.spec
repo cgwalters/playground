@@ -3,8 +3,10 @@ Summary: %{name}
 Version: 0
 Release: 1%{?dist}
 Source0: %{name}-%{version}.tar.xz
-License: ASLv2
+License: ASL 2.0
 BuildRequires: git
+BuildRequires: golang
+BuildRequires: /usr/bin/go-md2man
 
 %description
 %{summary}
