@@ -1,0 +1,49 @@
+{
+    "id": "org.verbum.PermsTest",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "3.24",
+    "sdk": "org.gnome.Sdk",
+    "command": "org.verbum.PermsTest",
+    "finish-args": [
+        "--share=ipc",
+        "--share=network",
+        "--socket=wayland",
+        "--socket=x11",
+        "--socket=pulseaudio"
+    ],
+    "cleanup": [
+        "/include",
+        "/lib/pkgconfig",
+        "/share/pkgconfig",
+        "/share/aclocal",
+        "/man",
+        "/share/man",
+        "/share/gtk-doc",
+        "/share/vala",
+        "*.la",
+        "*.a"
+    ],
+    "modules": [
+        {
+            "name": "permstest",
+            "buildsystem": "simple",
+            "build-commands": ["touch /app/suidfile && chmod u+s /app/suidfile",
+                               "touch /app/sgidfile && chmod u+g /app/suidfile",
+                               "touch /app/sugidfile && chmod u+s,g+s /app/sugidfile",
+                               "touch /app/worldwritable-file && chmod a+w /app/worldwritable-file",
+                               "touch /app/sticky-file && chmod +t /app/sticky-file",
+                               "mkdir -m 0777 /app/worldwritable-dir",
+                               "mkdir -m 01777 /app/worldwritable-sticky-dir",
+                               "mkdir /app/suid-dir && chmod u+s /app/suid-dir",
+                               "mkdir /app/sgid-dir && chmod g+s /app/sgid-dir",
+                               "mkdir /app/sugid-dir && chmod u+s,g+s /app/sugid-dir",
+                               "mkdir /app/bin && (echo '#!/bin/sh'; echo 'echo hello') >/app/bin/org.verbum.PermsTest"
+                              ],
+            "sources": [
+                {"type": "shell",
+                 "commands": ["true"]
+                }
+            ]
+        }
+    ]
+}
