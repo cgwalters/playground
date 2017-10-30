@@ -1,7 +1,10 @@
 FROM fedora:26
+RUN rm -rf /run/* /var/run/*
+ADD uidgid-fixup passwd group /root/
+RUN cd /root && ./uidgid-fixup / passwd group && cp passwd /etc/passwd && cp group /etc/group
 RUN yum -y install kernel{,-core,-modules} dracut-config-generic @core \
                    lvm2 cryptsetup audit policycoreutils \
-                   rpm-ostree ostree{,-grub2} nss-altfiles \
+                   rpm-ostree ostree{,-grub2} polkit nss-altfiles \
     && yum -y remove cronie plymouth \
     && semodule -nB \
     && yum clean all \
