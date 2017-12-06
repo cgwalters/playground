@@ -1,0 +1,12 @@
+[package]
+name = "ln-mt"
+version = "0.1.0"
+authors = ["Colin Walters <walters@verbum.org>"]
+description = "Multithreaded linkat()"
+license = "Apache-2.0/MIT"
+
+[dependencies]
+clap = "~2.28"
+openat = "~0.1"
+failure = "~0.1"
+rayon = "0.9"
