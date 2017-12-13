@@ -1,6 +1,0 @@
-{
-    "repos": ["CentOS-Base"],
-    "selinux": true,
-    "documentation": false,
-    "packages": ["selinux-policy-targeted","coreutils"]
-}
