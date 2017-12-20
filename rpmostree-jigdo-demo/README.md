@@ -52,9 +52,10 @@ Preparation (inside a F27 container or host):
 As non-root (or root if you really want to):
 
 ```
+cowsay Check out https://fedorapeople.org/~walters/f26-jigdo-demo/
 ostree --repo=repo init --mode=bare-user
 # Setting releasever to 26 works around a bug; specifying --releasever should work but does not
-sed -i -e 's,$releasever,26,' < /etc/yum.repos.d/fedora.repo > fedora.repo
+sed -e 's,$releasever,26,' < /etc/yum.repos.d/fedora.repo > fedora.repo
 cat > walters-jigdo-demo.repo << EOF
 [walters-jigdo-demo]
 baseurl=https://fedorapeople.org/~walters/f26-jigdo-demo/
