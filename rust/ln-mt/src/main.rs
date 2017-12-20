@@ -1,16 +1,11 @@
 use std::path::Path;
-use std::{io,process,fs};
+use std::{io,process};
 extern crate clap;
 use clap::{Arg, App};
 extern crate openat;
-use openat::{Dir,SimpleType};
-#[macro_use]
+use openat::{SimpleType};
 extern crate rayon;
 use rayon::prelude::*;
-#[macro_use]
-extern crate failure;
-
-use failure::Error;
 
 fn linkat_recurse(src_dfd: &openat::Dir,
                   src_name: &Path,
@@ -19,9 +14,9 @@ fn linkat_recurse(src_dfd: &openat::Dir,
     let src = src_dfd.sub_dir(src_name)?;
     let src_meta = src.metadata(".")?;
 
-    dest_dfd.create_dir(dest_name, src_meta.stat().st_mode);
+    dest_dfd.create_dir(dest_name, src_meta.stat().st_mode)?;
     let dest = dest_dfd.sub_dir(dest_name)?;
-    for entry in src.list_dir(Path::new("."))? {
+    for entry in src.list_dir(Path::new("."))?.par_iter() {
         let entry = entry?;
         let entrytype: openat::SimpleType =
             match entry.simple_type() {
@@ -47,14 +42,8 @@ fn linkat_recurse(src_dfd: &openat::Dir,
 }
 
 fn run(src_path: &Path, dest_path: &Path) -> io::Result<()> {
-    let results : Vec<io::Result<()>> = vec!(Ok(()), Ok(()), Ok(()),
-                                             Err(io::Error::new(io::ErrorKind::InvalidInput, "oops").into()),
-                                             Ok(()), Ok(()), Ok(()));
-    let res = results.par_iter().find_any(|&a| match *a { Ok(()) => false, _ => true });
-    println!("{:?}", res);
-    Ok(())
-    // let cwd = openat::Dir::cwd();
-    // linkat_recurse(&cwd, src_path, &cwd, dest_path)
+    let cwd = openat::Dir::cwd();
+    linkat_recurse(&cwd, src_path, &cwd, dest_path)
 }
 
 fn main() {
