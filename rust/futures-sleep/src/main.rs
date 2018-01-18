@@ -25,6 +25,9 @@ fn run(n: u32) -> io::Result<()> {
         rxs.push(f);
     }
 
+    // Stole this from the futures_unordered.rs test oneshots()
+    // This incantation is apparently the way to synchronously
+    // wait on the FuturesUnordered set.
     future::lazy(move || {
         loop {
             if let Ok(Async::Ready(None)) = rxs.poll() {
