@@ -3,19 +3,19 @@ extern crate quick_xml;
 
 use std::io::{Result,Error};
 use std::{io,thread,fs};
-use std::sync::mpsc::{channel, Receiver};
 use std::str::FromStr;
 use std::time::Duration;
 
 use clap::{Arg, App};
 use quick_xml::reader::Reader;
-use quick_xml::events::Event;
+use quick_xml::events::{Event,BytesStart,BytesEnd};
 use quick_xml::writer::Writer;
 
-fn write_package(w: &Writer,
-                 pkgid: &str, name: &str, arch: &str, epoch: &str,
-                 rel: &str, files: &Vec<String>, dirs: &Vec<String>) -> io::Result<()> {
-    w.write_event(Event::Start())
+fn write_package<W : io::Write>(w: &Writer<W>, pkgid: &str, name: &str, arch: &str, epoch: &str,
+                    rel: &str, files: &Vec<String>, dirs: &Vec<String>) -> io::Result<()> {
+    w.write_event(Event::Start(BytesStart::owned(b"package".into(), 7)))?;
+    w.write_event(Event::End(BytesEnd::owned(b"package")))?;
+    Ok(())
 }
 
 fn run(in_path: &str, out_path: &str) -> io::Result<()> {
@@ -43,7 +43,7 @@ fn run(in_path: &str, out_path: &str) -> io::Result<()> {
                 match e.name() {
                     b"filelists" => writer.write_event(Event::Start(e)),
                     b"file" => {
-                        is_dir = e.attributes().any(|a| a.key == b'dir');
+                        is_dir = e.attributes().any(|a| a.key == b"dir");
                         in_file = true;
                     }
                     _ => (),
@@ -52,7 +52,7 @@ fn run(in_path: &str, out_path: &str) -> io::Result<()> {
             Ok(Event::End(ref e)) => {
                 match e.name() {
                     b"filelists" => writer.write_event(Event::End(e)),
-                    b"file" => in_file = false;
+                    b"file" => { in_file = false },
                     b"package" => {
                         write_package(pkgid, name, arch, epoch, ver, rel, files, dirs);
                         pkgid = "";
@@ -63,6 +63,7 @@ fn run(in_path: &str, out_path: &str) -> io::Result<()> {
                         files = vec![];
                         dirs = vec![];
                     }
+                }
             }
             Ok(Event::Text(e)) => {
                 let decoded = e.unescape_and_decode(&reader).map_err(|err| io::Error::new(io::ErrorKind::Other, err.to_string()))?;
