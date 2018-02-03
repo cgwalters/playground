@@ -1,85 +1,74 @@
 extern crate clap;
-extern crate quick_xml;
+extern crate xml;
 
-use std::io::{Result,Error};
+use std::io::{Read,Write,Result,Error};
 use std::{io,thread,fs};
 use std::str::FromStr;
 use std::time::Duration;
 
 use clap::{Arg, App};
-use quick_xml::reader::Reader;
-use quick_xml::events::{Event,BytesStart,BytesEnd};
-use quick_xml::writer::Writer;
+use xml::reader::{EventReader, XmlEvent};
+use xml::writer::{EventWriter, EmitterConfig};
 
-fn write_package<W : io::Write>(w: &Writer<W>, pkgid: &str, name: &str, arch: &str, epoch: &str,
-                    rel: &str, files: &Vec<String>, dirs: &Vec<String>) -> io::Result<()> {
-    w.write_event(Event::Start(BytesStart::owned(b"package".into(), 7)))?;
-    w.write_event(Event::End(BytesEnd::owned(b"package")))?;
-    Ok(())
+//fn write_package<W: Write>(w: &mut EventWriter<W>, pkgid: &str, name: &str, arch: &str, epoch: &str,
+//                    rel: &str, files: &Vec<String>, dirs: &Vec<String>) -> io::Result<()> {
+//    w.write(XmlEvent::start_element("package"));
+//    w.write(XmlEvent::end_element("package"));
+//    Ok(())
+//}
+
+fn write_event<W: Write>(writer: &mut EventWriter<W>, event: xml::writer::events::XmlEvent) -> io::Result<()> {
+    writer.write(event).map_err(|err| io::Error::new(io::ErrorKind::Other, err.to_string()))
 }
 
 fn run(in_path: &str, out_path: &str) -> io::Result<()> {
-    let inf_raw = std::fs::File::open(in_path)?;
-    let inf = io::BufReader::new(inf_raw);
-    let outf_raw = std::fs::File::create(out_path)?;
-    let outf = io::BufWriter::new(outf_raw);
-    let mut reader = Reader::from_reader(inf);
-    let mut buf = Vec::new();
-    let mut writer = Writer::new(outf);
-    loop {
-        let mut pkgid = "";
-        let mut name = "";
-        let mut arch = "";
-        let mut epoch = "";
-        let mut ver = "";
-        let mut rel = "";
-        let mut files : Vec<String> = vec![];
-        let mut dirs : Vec<String> = vec![];
-        // For <file>
-        let mut in_file = false;
-        let mut is_dir = false;
-        match reader.read_event(&mut buf) {
-            Ok(Event::Start(ref e)) => {
-                match e.name() {
-                    b"filelists" => writer.write_event(Event::Start(e)),
-                    b"file" => {
-                        is_dir = e.attributes().any(|a| a.key == b"dir");
+    let inf = std::fs::File::open(in_path)?;
+    let inf = io::BufReader::new(inf);
+    let outf = std::fs::File::create(out_path)?;
+    let parser = EventReader::new(inf);
+    let mut writer = EmitterConfig::new().perform_indent(true).create_writer(&outf);
+
+    // For <file>
+    let mut in_file = false;
+    let mut is_dir = false;
+    // Loop
+    for event in parser {
+        let event = event.map_err(|err| io::Error::new(io::ErrorKind::Other, err.to_string()))?;
+        match &event {
+            &XmlEvent::StartElement { name : ref eltname, ref attributes, .. } => {
+                match &eltname.local_name[..] {
+                    "file" => {
+                        is_dir = attributes.iter().any(|a| a.name.local_name == "dir");
                         in_file = true;
                     }
-                    _ => (),
-                }
-            },
-            Ok(Event::End(ref e)) => {
-                match e.name() {
-                    b"filelists" => writer.write_event(Event::End(e)),
-                    b"file" => { in_file = false },
-                    b"package" => {
-                        write_package(pkgid, name, arch, epoch, ver, rel, files, dirs);
-                        pkgid = "";
-                        name = "";
-                        arch = "";
-                        ver = "";
-                        rel = "";
-                        files = vec![];
-                        dirs = vec![];
+                    _ => {
+                        if let Some(we) = event.as_writer_event() {
+                            write_event(&mut writer, we);
+                        }
                     }
                 }
-            }
-            Ok(Event::Text(e)) => {
-                let decoded = e.unescape_and_decode(&reader).map_err(|err| io::Error::new(io::ErrorKind::Other, err.to_string()))?;
+            },
+            &XmlEvent::EndElement { name : ref eltname } => {
+                match &eltname.local_name[..] {
+                    "file" => { in_file = false },
+                    _ => {
+                        if let Some(we) = event.as_writer_event() {
+                            write_event(&mut writer, we);
+                        }
+                    }
+                }
+            },
+            &XmlEvent::Characters(ref txt) => {
                 if in_file {
                     if is_dir {
-                        dirs.push(decoded);
+                        println!("dir={}", txt);
                     } else {
-                        files.push(decoded);
+                        println!("file={}", txt);
                     }
                 }
             },
-            Ok(Event::Eof) => break, // exits the loop when reaching end of file
-            Err(e) => return Err(io::Error::new(io::ErrorKind::Other, e.to_string())),
             _ => (), // There are several other `Event`s we do not consider here
         }
-        buf.clear();
     }
 
     Ok(())
