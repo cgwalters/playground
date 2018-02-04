@@ -1,27 +1,47 @@
 extern crate clap;
 extern crate xml;
+extern crate serde_xml_rs;
+#[macro_use] extern crate serde_derive;
 
 use std::io::{Read,Write,Result,Error};
 use std::{io,thread,fs};
+use std::path::Path;
 use std::str::FromStr;
 use std::time::Duration;
 
 use clap::{Arg, App};
 use xml::reader::{EventReader, XmlEvent};
 use xml::writer::{EventWriter, EmitterConfig};
+use serde_xml_rs::deserialize;
 
-//fn write_package<W: Write>(w: &mut EventWriter<W>, pkgid: &str, name: &str, arch: &str, epoch: &str,
-//                    rel: &str, files: &Vec<String>, dirs: &Vec<String>) -> io::Result<()> {
-//    w.write(XmlEvent::start_element("package"));
-//    w.write(XmlEvent::end_element("package"));
-//    Ok(())
-//}
+#[derive(Debug, Deserialize)]
+struct RepoMD {
+    revision : u64,
+    data: Vec<RepoDataItem>,
+}
+
+#[derive(Debug, Deserialize)]
+struct RepoDataLocation {
+    href: String,
+}
+
+#[derive(Debug, Deserialize)]
+struct RepoDataItem {
+    checksum: String,
+    #[serde(rename = "open-checksum")]
+    open_checksum: Option<String>,
+    location: RepoDataLocation,
+    timestamp: u64,
+    size: u64,
+    #[serde(rename = "open-size")]
+    open_size: Option<u64>,
+}
 
 fn write_event<W: Write>(writer: &mut EventWriter<W>, event: xml::writer::events::XmlEvent) -> io::Result<()> {
     writer.write(event).map_err(|err| io::Error::new(io::ErrorKind::Other, err.to_string()))
 }
 
-fn run(in_path: &str, out_path: &str) -> io::Result<()> {
+fn filter_filelists(in_path: &str, out_path: &str) -> io::Result<()> {
     let inf = std::fs::File::open(in_path)?;
     let inf = io::BufReader::new(inf);
     let outf = std::fs::File::create(out_path)?;
@@ -67,10 +87,22 @@ fn run(in_path: &str, out_path: &str) -> io::Result<()> {
                     }
                 }
             },
-            _ => (), // There are several other `Event`s we do not consider here
+            _ => ()
         }
     }
 
+    Ok(())
+}
+
+fn run(srcdir: &str, destdir: &str) -> io::Result<()> {
+    let srcp = Path::new(srcdir);
+    let destp = Path::new(destdir);
+
+    let repodata_p = srcp.join("repomd.xml");
+    let repodata_in = std::fs::File::open(repodata_p)?;
+    let repodata_in = io::BufReader::new(repodata_in);
+    let repomd : RepoMD = serde_xml_rs::deserialize(repodata_in).
+        map_err(|err| io::Error::new(io::ErrorKind::Other, err.to_string()))?;
     Ok(())
 }
 
@@ -78,12 +110,12 @@ fn main() {
     let matches = App::new("rpmmd-optimize")
         .version("0.1")
         .about("Apply optimization passes to rpm-md")
-        .arg(Arg::with_name("filelists-in").required(true))
-        .arg(Arg::with_name("filelists-out").required(true))
+        .arg(Arg::with_name("srcdir").required(true))
+        .arg(Arg::with_name("destdir").required(true))
         .get_matches();
 
-    match run(matches.value_of("filelists-in").unwrap(),
-              matches.value_of("filelists-out").unwrap()) {
+    match run(matches.value_of("srcdir").unwrap(),
+              matches.value_of("destdir").unwrap()) {
         Ok(_) => { },
         Err(e) => { eprintln!("{:?}", e);
                     std::process::exit(1) }
