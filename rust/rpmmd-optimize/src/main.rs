@@ -37,6 +37,21 @@ struct RepoDataItem {
     open_size: Option<u64>,
 }
 
+#[derive(Debug, Deserialize)]
+struct PackageVersion {
+    epoch: u32,
+    ver: String,
+    rel: String
+}
+
+struct PackageId {
+    name: String,
+    epoch: u32,
+    ver: String,
+    rel: String,
+    arch: String,
+}
+
 fn write_event<W: Write>(writer: &mut EventWriter<W>, event: xml::writer::events::XmlEvent) -> io::Result<()> {
     writer.write(event).map_err(|err| io::Error::new(io::ErrorKind::Other, err.to_string()))
 }
