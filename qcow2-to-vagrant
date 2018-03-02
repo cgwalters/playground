@@ -39,9 +39,18 @@ gf() {
 }
 
 gf run
-gf mount /dev/atomicos/root /
-stateroot=/ostree/deploy/$(gf ls /ostree/deploy)
-rootdir=${stateroot}/deploy/$(gf ls ${stateroot}/deploy | grep -v \.origin)
+is_atomic=false
+if $(gf list-filesystems |grep -q atomicos); then
+    is_atomic=true
+fi
+if ${is_atomic}; then
+    gf mount /dev/atomicos/root /
+    stateroot=/ostree/deploy/$(gf ls /ostree/deploy)
+    rootdir=${stateroot}/deploy/$(gf ls ${stateroot}/deploy | grep -v \.origin)
+else
+    gf mount /dev/sda1 /
+    rootdir=/
+fi
 # Copy an existing unit file to ensure we get SELinux labeling correct
 unit_dest="${rootdir}/etc/systemd/system/qcow2-to-vagrant.service"
 gf cp-a "${rootdir}/usr/lib/systemd/system/systemd-random-seed.service" "${unit_dest}"
@@ -75,14 +84,14 @@ cat > ${tmpd}/qcow2-to-vagrant-init << EOF
 #!/usr/bin/bash
 # This is like https://pagure.io/fedora-kickstarts/blob/master/f/fedora-atomic-vagrant.ks
 set -euo pipefail
+echo -n 'vagrant' | passwd -f --stdin root
 passwd -u root
-echo -n 'vagrant' | passwd --stdin root
 
 sed -i 's,Defaults\\s*requiretty,Defaults !requiretty,' /etc/sudoers
 
 
 useradd vagrant
-echo -n 'vagrant' | passwd --stdin vagrant
+echo -n 'vagrant' | passwd -f --stdin vagrant
 
 echo 'vagrant ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/vagrant-nopasswd
 sed -i 's/.*UseDNS.*/UseDNS no/' /etc/ssh/sshd_config
@@ -97,6 +106,8 @@ EOF
 gf upload ${tmpd}/qcow2-to-vagrant-init "${bin_dest}"
 
 # Disable cloud-init
+gf write "${rootdir}/etc/cloud/cloud-init.disabled" ""
+gf_relabel "${rootdir}/etc/cloud/cloud-init.disabled"
 gf glob rm-rf "${rootdir}/etc/systemd/system/multi-user.target.wants/cloud-init*"
 gf glob rm-rf "${rootdir}/etc/systemd/system/multi-user.target.wants/cloud-final.service"
 gf glob rm-rf "${rootdir}/etc/systemd/system/multi-user.target.wants/cloud-config*"
