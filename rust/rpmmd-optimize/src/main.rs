@@ -1,9 +1,11 @@
 extern crate clap;
 extern crate xml;
+extern crate failure;
 extern crate serde_xml_rs;
 #[macro_use] extern crate serde_derive;
 
-use std::io::{Read,Write,Result,Error};
+use failure::{Error, err_msg};
+use std::io::{Read,Write};
 use std::{io,thread,fs};
 use std::path::Path;
 use std::str::FromStr;
@@ -52,11 +54,11 @@ struct PackageId {
     arch: String,
 }
 
-fn write_event<W: Write>(writer: &mut EventWriter<W>, event: xml::writer::events::XmlEvent) -> io::Result<()> {
-    writer.write(event).map_err(|err| io::Error::new(io::ErrorKind::Other, err.to_string()))
+fn write_event<W: Write>(writer: &mut EventWriter<W>, event: xml::writer::events::XmlEvent) -> Result<(), Error> {
+    writer.write(event).map_err(err_msg)
 }
 
-fn filter_filelists(in_path: &str, out_path: &str) -> io::Result<()> {
+fn filter_filelists(in_path: &str, out_path: &str) -> Result<(), Error> {
     let inf = std::fs::File::open(in_path)?;
     let inf = io::BufReader::new(inf);
     let outf = std::fs::File::create(out_path)?;
@@ -68,7 +70,7 @@ fn filter_filelists(in_path: &str, out_path: &str) -> io::Result<()> {
     let mut is_dir = false;
     // Loop
     for event in parser {
-        let event = event.map_err(|err| io::Error::new(io::ErrorKind::Other, err.to_string()))?;
+        let event = event?;
         match &event {
             &XmlEvent::StartElement { name : ref eltname, ref attributes, .. } => {
                 match &eltname.local_name[..] {
@@ -78,7 +80,7 @@ fn filter_filelists(in_path: &str, out_path: &str) -> io::Result<()> {
                     }
                     _ => {
                         if let Some(we) = event.as_writer_event() {
-                            write_event(&mut writer, we);
+                            write_event(&mut writer, we)?
                         }
                     }
                 }
@@ -88,7 +90,7 @@ fn filter_filelists(in_path: &str, out_path: &str) -> io::Result<()> {
                     "file" => { in_file = false },
                     _ => {
                         if let Some(we) = event.as_writer_event() {
-                            write_event(&mut writer, we);
+                            write_event(&mut writer, we)?
                         }
                     }
                 }
@@ -109,15 +111,14 @@ fn filter_filelists(in_path: &str, out_path: &str) -> io::Result<()> {
     Ok(())
 }
 
-fn run(srcdir: &str, destdir: &str) -> io::Result<()> {
+fn run(srcdir: &str, destdir: &str) -> Result<(), Error> {
     let srcp = Path::new(srcdir);
     let destp = Path::new(destdir);
 
     let repodata_p = srcp.join("repomd.xml");
     let repodata_in = std::fs::File::open(repodata_p)?;
     let repodata_in = io::BufReader::new(repodata_in);
-    let repomd : RepoMD = serde_xml_rs::deserialize(repodata_in).
-        map_err(|err| io::Error::new(io::ErrorKind::Other, err.to_string()))?;
+    let repomd : RepoMD = serde_xml_rs::deserialize(repodata_in)?;
     Ok(())
 }
 
