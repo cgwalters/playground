@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<filelists xmlns="http://linux.duke.edu/metadata/filelists" packages="54801">
+<package pkgid="2069ba689f780a2dd337486535e7e93b99c9a3f81b763e449b1b7e054cafa6a0" name="0ad" arch="x86_64">
+  <version epoch="0" ver="0.0.22" rel="2.fc27"/>
+  <file>/usr/bin/0ad</file>
+  <file>/usr/bin/pyrogenesis</file>
+  <file type="dir">/usr/lib/.build-id</file>
+  <file type="dir">/usr/lib/.build-id/0b</file>
+  <file>/usr/lib/.build-id/0b/bf2b19328de80336028e73bf77900f9913b202</file>
+  <file type="dir">/usr/lib/.build-id/69</file>
+</package>
+<package pkgid="e448d55967c6b95176511ae97ea2bdb47f99e40f80e84b66927b028a12923485" name="0ad-data" arch="noarch">
+  <version epoch="0" ver="0.0.22" rel="1.fc27"/>
+  <file type="dir">/usr/share/0ad</file>
+  <file type="dir">/usr/share/0ad/config</file>
+  <file>/usr/share/0ad/config/default.cfg</file>
+  <file>/usr/share/0ad/config/keys.txt</file>
+  <file type="dir">/usr/share/0ad/mods</file>
+  <file type="dir">/usr/share/0ad/mods/mod</file>
+</package>
+</filelists>

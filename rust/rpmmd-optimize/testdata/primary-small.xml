@@ -1,0 +1,993 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xmlns="http://linux.duke.edu/metadata/common" xmlns:rpm="http://linux.duke.edu/metadata/rpm" packages="54801">
+<package type="rpm">
+  <name>0ad</name>
+  <arch>x86_64</arch>
+  <version epoch="0" ver="0.0.22" rel="2.fc27"/>
+  <checksum type="sha256" pkgid="YES">2069ba689f780a2dd337486535e7e93b99c9a3f81b763e449b1b7e054cafa6a0</checksum>
+  <summary>Cross-Platform RTS Game of Ancient Warfare</summary>
+  <description>0 A.D. (pronounced "zero ey-dee") is a free, open-source, cross-platform
+real-time strategy (RTS) game of ancient warfare. In short, it is a
+historically-based war/economy game that allows players to relive or rewrite
+the history of Western civilizations, focusing on the years between 500 B.C.
+and 500 A.D. The project is highly ambitious, involving state-of-the-art 3D
+graphics, detailed artwork, sound, and a flexible and powerful custom-built
+game engine.
+
+The game has been in development by Wildfire Games (WFG), a group of volunteer,
+hobbyist game developers, since 2001.</description>
+  <packager>Fedora Project</packager>
+  <url>http://play0ad.com</url>
+  <time file="1501976131" build="1501694019"/>
+  <size package="4005126" installed="12475319" archive="12506896"/>
+  <location href="Packages/0/0ad-0.0.22-2.fc27.x86_64.rpm"/>
+  <format>
+    <rpm:license>GPLv2+ and BSD and MIT and IBM</rpm:license>
+    <rpm:vendor>Fedora Project</rpm:vendor>
+    <rpm:group>Amusements/Games</rpm:group>
+    <rpm:buildhost>buildvm-20.phx2.fedoraproject.org</rpm:buildhost>
+    <rpm:sourcerpm>0ad-0.0.22-2.fc27.src.rpm</rpm:sourcerpm>
+    <rpm:header-range start="4424" end="45166"/>
+    <rpm:provides>
+      <rpm:entry name="0ad" flags="EQ" epoch="0" ver="0.0.22" rel="2.fc27"/>
+      <rpm:entry name="0ad(x86-64)" flags="EQ" epoch="0" ver="0.0.22" rel="2.fc27"/>
+      <rpm:entry name="appdata()"/>
+      <rpm:entry name="appdata(0ad.appdata.xml)"/>
+      <rpm:entry name="application()"/>
+      <rpm:entry name="application(0ad.desktop)"/>
+      <rpm:entry name="libAtlasUI.so()(64bit)"/>
+      <rpm:entry name="libCollada.so()(64bit)"/>
+    </rpm:provides>
+    <rpm:requires>
+      <rpm:entry name="/bin/sh"/>
+      <rpm:entry name="0ad-data" flags="EQ" epoch="0" ver="0.0.22"/>
+      <rpm:entry name="libGL.so.1()(64bit)"/>
+      <rpm:entry name="libSDL2-2.0.so.0()(64bit)"/>
+      <rpm:entry name="libX11.so.6()(64bit)"/>
+      <rpm:entry name="libXcursor.so.1()(64bit)"/>
+      <rpm:entry name="libboost_filesystem.so.1.64.0()(64bit)"/>
+      <rpm:entry name="libcurl.so.4()(64bit)"/>
+      <rpm:entry name="libdl.so.2()(64bit)"/>
+      <rpm:entry name="libdl.so.2(GLIBC_2.2.5)(64bit)"/>
+      <rpm:entry name="libenet.so.7()(64bit)"/>
+      <rpm:entry name="libgcc_s.so.1()(64bit)"/>
+      <rpm:entry name="libgcc_s.so.1(GCC_3.0)(64bit)"/>
+      <rpm:entry name="libgcc_s.so.1(GCC_3.4)(64bit)"/>
+      <rpm:entry name="libgloox.so.13()(64bit)"/>
+      <rpm:entry name="libicui18n.so.57()(64bit)"/>
+      <rpm:entry name="libicuuc.so.57()(64bit)"/>
+      <rpm:entry name="libm.so.6()(64bit)"/>
+      <rpm:entry name="libm.so.6(GLIBC_2.2.5)(64bit)"/>
+      <rpm:entry name="libminiupnpc.so.16()(64bit)"/>
+      <rpm:entry name="libmozjs-38.so()(64bit)"/>
+      <rpm:entry name="libmozjs-38.so(js)(64bit)"/>
+      <rpm:entry name="libnvtt.so.2.0()(64bit)"/>
+      <rpm:entry name="libopenal.so.1()(64bit)"/>
+      <rpm:entry name="libpng16.so.16()(64bit)"/>
+      <rpm:entry name="libpng16.so.16(PNG16_0)(64bit)"/>
+      <rpm:entry name="libpthread.so.0()(64bit)"/>
+      <rpm:entry name="libpthread.so.0(GLIBC_2.2.5)(64bit)"/>
+      <rpm:entry name="libpthread.so.0(GLIBC_2.3.2)(64bit)"/>
+      <rpm:entry name="librt.so.1()(64bit)"/>
+      <rpm:entry name="librt.so.1(GLIBC_2.2.5)(64bit)"/>
+      <rpm:entry name="libstdc++.so.6()(64bit)"/>
+      <rpm:entry name="libstdc++.so.6(CXXABI_1.3)(64bit)"/>
+      <rpm:entry name="libstdc++.so.6(CXXABI_1.3.5)(64bit)"/>
+      <rpm:entry name="libstdc++.so.6(CXXABI_1.3.8)(64bit)"/>
+      <rpm:entry name="libstdc++.so.6(CXXABI_1.3.9)(64bit)"/>
+      <rpm:entry name="libstdc++.so.6(GLIBCXX_3.4)(64bit)"/>
+      <rpm:entry name="libstdc++.so.6(GLIBCXX_3.4.11)(64bit)"/>
+      <rpm:entry name="libstdc++.so.6(GLIBCXX_3.4.14)(64bit)"/>
+      <rpm:entry name="libstdc++.so.6(GLIBCXX_3.4.15)(64bit)"/>
+      <rpm:entry name="libstdc++.so.6(GLIBCXX_3.4.18)(64bit)"/>
+      <rpm:entry name="libstdc++.so.6(GLIBCXX_3.4.19)(64bit)"/>
+      <rpm:entry name="libstdc++.so.6(GLIBCXX_3.4.20)(64bit)"/>
+      <rpm:entry name="libstdc++.so.6(GLIBCXX_3.4.21)(64bit)"/>
+      <rpm:entry name="libstdc++.so.6(GLIBCXX_3.4.9)(64bit)"/>
+      <rpm:entry name="libvorbisfile.so.3()(64bit)"/>
+      <rpm:entry name="libwx_baseu-2.8.so.0()(64bit)"/>
+      <rpm:entry name="libwx_baseu-2.8.so.0(WXU_2.8)(64bit)"/>
+      <rpm:entry name="libwx_baseu_xml-2.8.so.0()(64bit)"/>
+      <rpm:entry name="libwx_baseu_xml-2.8.so.0(WXU_2.8)(64bit)"/>
+      <rpm:entry name="libwx_gtk2u_core-2.8.so.0()(64bit)"/>
+      <rpm:entry name="libwx_gtk2u_core-2.8.so.0(WXU_2.8)(64bit)"/>
+      <rpm:entry name="libwx_gtk2u_gl-2.8.so.0()(64bit)"/>
+      <rpm:entry name="libwx_gtk2u_gl-2.8.so.0(WXU_2.8)(64bit)"/>
+      <rpm:entry name="libxml2.so.2()(64bit)"/>
+      <rpm:entry name="libxml2.so.2(LIBXML2_2.4.30)(64bit)"/>
+      <rpm:entry name="libxml2.so.2(LIBXML2_2.5.2)(64bit)"/>
+      <rpm:entry name="libxml2.so.2(LIBXML2_2.6.0)(64bit)"/>
+      <rpm:entry name="libxml2.so.2(LIBXML2_2.6.21)(64bit)"/>
+      <rpm:entry name="libxml2.so.2(LIBXML2_2.9.0)(64bit)"/>
+      <rpm:entry name="libz.so.1()(64bit)"/>
+      <rpm:entry name="libz.so.1(ZLIB_1.2.0)(64bit)"/>
+      <rpm:entry name="rtld(GNU_HASH)"/>
+      <rpm:entry name="libc.so.6(GLIBC_2.15)(64bit)"/>
+    </rpm:requires>
+    <file>/usr/bin/0ad</file>
+    <file>/usr/bin/pyrogenesis</file>
+  </format>
+</package>
+<package type="rpm">
+  <name>0ad-data</name>
+  <arch>noarch</arch>
+  <version epoch="0" ver="0.0.22" rel="1.fc27"/>
+  <checksum type="sha256" pkgid="YES">e448d55967c6b95176511ae97ea2bdb47f99e40f80e84b66927b028a12923485</checksum>
+  <summary>The Data Files for 0 AD</summary>
+  <description>0 A.D. (pronounced "zero ey-dee") is a free, open-source, cross-platform
+real-time strategy (RTS) game of ancient warfare. In short, it is a
+historically-based war/economy game that allows players to relive or rewrite
+the history of Western civilizations, focusing on the years between 500 B.C.
+and 500 A.D. The project is highly ambitious, involving state-of-the-art 3D
+graphics, detailed artwork, sound, and a flexible and powerful custom-built
+game engine.
+
+This package contains the 0ad data files.</description>
+  <packager>Fedora Project</packager>
+  <url>http://play0ad.com</url>
+  <time file="1501141546" build="1501140804"/>
+  <size package="696964242" installed="1789971246" archive="1789982248"/>
+  <location href="Packages/0/0ad-data-0.0.22-1.fc27.noarch.rpm"/>
+  <format>
+    <rpm:license>CC-BY-SA</rpm:license>
+    <rpm:vendor>Fedora Project</rpm:vendor>
+    <rpm:group>Amusements/Games</rpm:group>
+    <rpm:buildhost>buildhw-04.phx2.fedoraproject.org</rpm:buildhost>
+    <rpm:sourcerpm>0ad-data-0.0.22-1.fc27.src.rpm</rpm:sourcerpm>
+    <rpm:header-range start="4424" end="18102"/>
+    <rpm:provides>
+      <rpm:entry name="0ad-data" flags="EQ" epoch="0" ver="0.0.22" rel="1.fc27"/>
+    </rpm:provides>
+    <rpm:requires>
+      <rpm:entry name="dejavu-sans-fonts"/>
+      <rpm:entry name="dejavu-sans-mono-fonts"/>
+    </rpm:requires>
+  </format>
+</package>
+<package type="rpm">
+  <name>0install</name>
+  <arch>x86_64</arch>
+  <version epoch="0" ver="2.12.1" rel="1.fc27"/>
+  <checksum type="sha256" pkgid="YES">771b2a978dabf8e94c558c4879b6aa248c69f91aa299c9967e1634343f9842b3</checksum>
+  <summary>A decentralized cross-distribution software installation system</summary>
+  <description>Zero Install is a decentralized cross-distribution software
+installation system available under the LGPL. It allows software
+developers to publish programs directly from their own web-sites,
+while supporting features familiar from centralized distribution
+repositories such as shared libraries, automatic updates and digital
+signatures. It is intended to complement, rather than replace, the
+operating system's package management. 0install packages never
+interfere with those provided by the distribution.
+
+0install does not define a new packaging format; unmodified tarballs
+or zip archives can be used. Instead, it defines an XML metadata
+format to describe these packages and the dependencies between them. A
+single metadata file can be used on multiple platforms (e.g. Ubuntu,
+Debian, Fedora, openSUSE, Mac OS X and Windows), assuming binary or
+source archives are available that work on those systems.
+
+0install also has some interesting features not often found in
+traditional package managers. For example, while it will share
+libraries whenever possible, it can always install multiple versions
+of a package in parallel when there are conflicting
+requirements. Installation is always side-effect-free (each package is
+unpacked to its own directory and will not touch shared directories
+such as /usr/bin), making it ideal for use with sandboxing
+technologies and virtualization.
+
+The XML file describing the program's requirements can also be
+included in a source-code repository, allowing full dependency
+handling for unreleased developer versions. For example, a user can
+clone a Git repository and build and test the program, automatically
+downloading newer versions of libraries where necessary, without
+interfering with the versions of those libraries installed by their
+distribution, which continue to be used for other software.</description>
+  <packager>Fedora Project</packager>
+  <url>http://0install.net</url>
+  <time file="1490760384" build="1490759602"/>
+  <size package="2534982" installed="10941589" archive="10949768"/>
+  <location href="Packages/0/0install-2.12.1-1.fc27.x86_64.rpm"/>
+  <format>
+    <rpm:license>LGPLv2+</rpm:license>
+    <rpm:vendor>Fedora Project</rpm:vendor>
+    <rpm:group>Unspecified</rpm:group>
+    <rpm:buildhost>buildvm-10.phx2.fedoraproject.org</rpm:buildhost>
+    <rpm:sourcerpm>0install-2.12.1-1.fc27.src.rpm</rpm:sourcerpm>
+    <rpm:header-range start="4424" end="20982"/>
+    <rpm:provides>
+      <rpm:entry name="0install" flags="EQ" epoch="0" ver="2.12.1" rel="1.fc27"/>
+      <rpm:entry name="0install(x86-64)" flags="EQ" epoch="0" ver="2.12.1" rel="1.fc27"/>
+      <rpm:entry name="appdata()"/>
+      <rpm:entry name="appdata(0install.appdata.xml)"/>
+      <rpm:entry name="application()"/>
+      <rpm:entry name="application(0install.desktop)"/>
+      <rpm:entry name="zeroinstall-injector" flags="EQ" epoch="0" ver="2.12.1" rel="1.fc27"/>
+    </rpm:provides>
+    <rpm:requires>
+      <rpm:entry name="/bin/sh"/>
+      <rpm:entry name="/bin/sh" pre="1"/>
+      <rpm:entry name="/bin/sh"/>
+      <rpm:entry name="hicolor-icon-theme"/>
+      <rpm:entry name="libatk-1.0.so.0()(64bit)"/>
+      <rpm:entry name="libcairo.so.2()(64bit)"/>
+      <rpm:entry name="libcrypto.so.1.1()(64bit)"/>
+      <rpm:entry name="libcrypto.so.1.1(OPENSSL_1_1_0)(64bit)"/>
+      <rpm:entry name="libcurl.so.4()(64bit)"/>
+      <rpm:entry name="libdl.so.2()(64bit)"/>
+      <rpm:entry name="libdl.so.2(GLIBC_2.2.5)(64bit)"/>
+      <rpm:entry name="libev.so.4()(64bit)"/>
+      <rpm:entry name="libfontconfig.so.1()(64bit)"/>
+      <rpm:entry name="libfreetype.so.6()(64bit)"/>
+      <rpm:entry name="libgdk-x11-2.0.so.0()(64bit)"/>
+      <rpm:entry name="libgdk_pixbuf-2.0.so.0()(64bit)"/>
+      <rpm:entry name="libgio-2.0.so.0()(64bit)"/>
+      <rpm:entry name="libglib-2.0.so.0()(64bit)"/>
+      <rpm:entry name="libgobject-2.0.so.0()(64bit)"/>
+      <rpm:entry name="libgtk-x11-2.0.so.0()(64bit)"/>
+      <rpm:entry name="libm.so.6()(64bit)"/>
+      <rpm:entry name="libm.so.6(GLIBC_2.2.5)(64bit)"/>
+      <rpm:entry name="libpango-1.0.so.0()(64bit)"/>
+      <rpm:entry name="libpangocairo-1.0.so.0()(64bit)"/>
+      <rpm:entry name="libpangoft2-1.0.so.0()(64bit)"/>
+      <rpm:entry name="libpthread.so.0()(64bit)"/>
+      <rpm:entry name="libpthread.so.0(GLIBC_2.2.5)(64bit)"/>
+      <rpm:entry name="libpthread.so.0(GLIBC_2.3.2)(64bit)"/>
+      <rpm:entry name="libssl.so.1.1()(64bit)"/>
+      <rpm:entry name="libssl.so.1.1(OPENSSL_1_1_0)(64bit)"/>
+      <rpm:entry name="rtld(GNU_HASH)"/>
+      <rpm:entry name="shadow-utils" pre="1"/>
+      <rpm:entry name="libc.so.6(GLIBC_2.15)(64bit)"/>
+    </rpm:requires>
+    <rpm:obsoletes>
+      <rpm:entry name="zeroinstall-injector" flags="LT" epoch="0" ver="2.4" rel="1.fc27"/>
+    </rpm:obsoletes>
+    <file>/usr/bin/0alias</file>
+    <file>/usr/bin/0desktop</file>
+    <file>/usr/bin/0install</file>
+    <file>/usr/bin/0launch</file>
+    <file>/usr/bin/0store</file>
+    <file>/usr/bin/0store-secure-add</file>
+  </format>
+</package>
+<package type="rpm">
+  <name>0xFFFF</name>
+  <arch>x86_64</arch>
+  <version epoch="0" ver="0.3.9" rel="15.fc26"/>
+  <checksum type="sha256" pkgid="YES">86a150b4ae084ba13c68c5862df5909840b115f6d851ada4b61e67bb713af560</checksum>
+  <summary>The Open Free Fiasco Firmware Flasher</summary>
+  <description>The 'Open Free Fiasco Firmware Flasher' aka 0xFFFF utility implements
+a free (GPL3) userspace handler for the NOLO bootloader and related
+utilities for the Nokia Internet Tablets like flashing setting device
+options, packing/unpacking FIASCO firmware format and more.</description>
+  <packager>Fedora Project</packager>
+  <url>http://www.nopcode.org/0xFFFF/</url>
+  <time file="1488411824" build="1486702918"/>
+  <size package="51422" installed="110356" archive="111308"/>
+  <location href="Packages/0/0xFFFF-0.3.9-15.fc26.x86_64.rpm"/>
+  <format>
+    <rpm:license>GPLv3</rpm:license>
+    <rpm:vendor>Fedora Project</rpm:vendor>
+    <rpm:group>Applications/System</rpm:group>
+    <rpm:buildhost>buildvm-05.phx2.fedoraproject.org</rpm:buildhost>
+    <rpm:sourcerpm>0xFFFF-0.3.9-15.fc26.src.rpm</rpm:sourcerpm>
+    <rpm:header-range start="4424" end="9926"/>
+    <rpm:provides>
+      <rpm:entry name="0xFFFF" flags="EQ" epoch="0" ver="0.3.9" rel="15.fc26"/>
+      <rpm:entry name="0xFFFF(x86-64)" flags="EQ" epoch="0" ver="0.3.9" rel="15.fc26"/>
+    </rpm:provides>
+    <rpm:requires>
+      <rpm:entry name="libusb-0.1.so.4()(64bit)"/>
+      <rpm:entry name="rtld(GNU_HASH)"/>
+      <rpm:entry name="libc.so.6(GLIBC_2.14)(64bit)"/>
+    </rpm:requires>
+    <file>/usr/bin/0xFFFF</file>
+    <file>/usr/bin/logotool</file>
+  </format>
+</package>
+<package type="rpm">
+  <name>2048-cli</name>
+  <arch>x86_64</arch>
+  <version epoch="0" ver="0.9.1" rel="4.fc27"/>
+  <checksum type="sha256" pkgid="YES">d7c17683dc49a2ad68ac3e0ec99109ebde049ee157695bafd4913c3760261aaa</checksum>
+  <summary>The game 2048 for your Linux terminal</summary>
+  <description>A cli version of the game 2048 for your Linux terminal.</description>
+  <packager>Fedora Project</packager>
+  <url>https://github.com/Tiehuis/2048-cli</url>
+  <time file="1501979237" build="1501693276"/>
+  <size package="21394" installed="23879" archive="25316"/>
+  <location href="Packages/2/2048-cli-0.9.1-4.fc27.x86_64.rpm"/>
+  <format>
+    <rpm:license>MIT</rpm:license>
+    <rpm:vendor>Fedora Project</rpm:vendor>
+    <rpm:group>Unspecified</rpm:group>
+    <rpm:buildhost>buildvm-28.phx2.fedoraproject.org</rpm:buildhost>
+    <rpm:sourcerpm>2048-cli-0.9.1-4.fc27.src.rpm</rpm:sourcerpm>
+    <rpm:header-range start="4424" end="9854"/>
+    <rpm:provides>
+      <rpm:entry name="2048-cli" flags="EQ" epoch="0" ver="0.9.1" rel="4.fc27"/>
+      <rpm:entry name="2048-cli(x86-64)" flags="EQ" epoch="0" ver="0.9.1" rel="4.fc27"/>
+    </rpm:provides>
+    <rpm:requires>
+      <rpm:entry name="libncurses.so.6()(64bit)"/>
+      <rpm:entry name="libtinfo.so.6()(64bit)"/>
+      <rpm:entry name="rtld(GNU_HASH)"/>
+      <rpm:entry name="libc.so.6(GLIBC_2.7)(64bit)"/>
+    </rpm:requires>
+    <file>/usr/bin/2048</file>
+  </format>
+</package>
+<package type="rpm">
+  <name>2048-cli-nocurses</name>
+  <arch>x86_64</arch>
+  <version epoch="0" ver="0.9.1" rel="4.fc27"/>
+  <checksum type="sha256" pkgid="YES">116361fd5fd3d27cb811850e31c05f2964c92a2cee2937fad7e108f2de4729fc</checksum>
+  <summary>The game 2048 for your Linux terminal (non-ncurses)</summary>
+  <description>A non-ncurses cli version of the game 2048 for your Linux terminal.</description>
+  <packager>Fedora Project</packager>
+  <url>https://github.com/Tiehuis/2048-cli</url>
+  <time file="1502106609" build="1501693276"/>
+  <size package="20726" installed="23871" archive="25312"/>
+  <location href="Packages/2/2048-cli-nocurses-0.9.1-4.fc27.x86_64.rpm"/>
+  <format>
+    <rpm:license>MIT</rpm:license>
+    <rpm:vendor>Fedora Project</rpm:vendor>
+    <rpm:group>Unspecified</rpm:group>
+    <rpm:buildhost>buildvm-28.phx2.fedoraproject.org</rpm:buildhost>
+    <rpm:sourcerpm>2048-cli-0.9.1-4.fc27.src.rpm</rpm:sourcerpm>
+    <rpm:header-range start="4424" end="9846"/>
+    <rpm:provides>
+      <rpm:entry name="2048-cli-nocurses" flags="EQ" epoch="0" ver="0.9.1" rel="4.fc27"/>
+      <rpm:entry name="2048-cli-nocurses(x86-64)" flags="EQ" epoch="0" ver="0.9.1" rel="4.fc27"/>
+    </rpm:provides>
+    <rpm:requires>
+      <rpm:entry name="rtld(GNU_HASH)"/>
+      <rpm:entry name="libc.so.6(GLIBC_2.7)(64bit)"/>
+    </rpm:requires>
+    <file>/usr/bin/2048nc</file>
+  </format>
+</package>
+<package type="rpm">
+  <name>2048-cli-sdl</name>
+  <arch>x86_64</arch>
+  <version epoch="0" ver="0.9.1" rel="4.fc27"/>
+  <checksum type="sha256" pkgid="YES">bfc6620f215f73d3d48cc71d49bb7a3a125b4321c677e3218da21ed0b3fd3cac</checksum>
+  <summary>The game 2048 for your Linux terminal (SDL)</summary>
+  <description>A SDL version of the game 2048 for your Linux terminal.</description>
+  <packager>Fedora Project</packager>
+  <url>https://github.com/Tiehuis/2048-cli</url>
+  <time file="1502100813" build="1501693276"/>
+  <size package="21774" installed="23871" archive="25312"/>
+  <location href="Packages/2/2048-cli-sdl-0.9.1-4.fc27.x86_64.rpm"/>
+  <format>
+    <rpm:license>MIT</rpm:license>
+    <rpm:vendor>Fedora Project</rpm:vendor>
+    <rpm:group>Unspecified</rpm:group>
+    <rpm:buildhost>buildvm-28.phx2.fedoraproject.org</rpm:buildhost>
+    <rpm:sourcerpm>2048-cli-0.9.1-4.fc27.src.rpm</rpm:sourcerpm>
+    <rpm:header-range start="4424" end="9914"/>
+    <rpm:provides>
+      <rpm:entry name="2048-cli-sdl" flags="EQ" epoch="0" ver="0.9.1" rel="4.fc27"/>
+      <rpm:entry name="2048-cli-sdl(x86-64)" flags="EQ" epoch="0" ver="0.9.1" rel="4.fc27"/>
+    </rpm:provides>
+    <rpm:requires>
+      <rpm:entry name="libSDL2-2.0.so.0()(64bit)"/>
+      <rpm:entry name="libSDL2_ttf-2.0.so.0()(64bit)"/>
+      <rpm:entry name="liberation-mono-fonts"/>
+      <rpm:entry name="rtld(GNU_HASH)"/>
+      <rpm:entry name="libc.so.6(GLIBC_2.7)(64bit)"/>
+    </rpm:requires>
+    <file>/usr/bin/2048sdl</file>
+  </format>
+</package>
+<package type="rpm">
+  <name>2ping</name>
+  <arch>noarch</arch>
+  <version epoch="0" ver="4.1" rel="1.fc27"/>
+  <checksum type="sha256" pkgid="YES">4c3c1ba5d6984889d0f2c3bf9dbf2314544c5b40e24ef8187a9b85bf26eaa984</checksum>
+  <summary>Bi-directional ping utility</summary>
+  <description>2ping is a bi-directional ping utility. It uses 3-way pings (akin to TCP SYN,
+SYN/ACK, ACK) and after-the-fact state comparison between a 2ping listener and
+a 2ping client to determine which direction packet loss occurs.</description>
+  <packager>Fedora Project</packager>
+  <url>http://www.finnie.org/software/2ping</url>
+  <time file="1503573898" build="1503573876"/>
+  <size package="71044" installed="232521" archive="239588"/>
+  <location href="Packages/2/2ping-4.1-1.fc27.noarch.rpm"/>
+  <format>
+    <rpm:license>GPLv2+</rpm:license>
+    <rpm:vendor>Fedora Project</rpm:vendor>
+    <rpm:group>Unspecified</rpm:group>
+    <rpm:buildhost>buildvm-ppc64le-11.ppc.fedoraproject.org</rpm:buildhost>
+    <rpm:sourcerpm>2ping-4.1-1.fc27.src.rpm</rpm:sourcerpm>
+    <rpm:header-range start="4424" end="14260"/>
+    <rpm:provides>
+      <rpm:entry name="2ping" flags="EQ" epoch="0" ver="4.1" rel="1.fc27"/>
+      <rpm:entry name="python3.6dist(2ping)" flags="EQ" epoch="0" ver="4.1"/>
+      <rpm:entry name="python3dist(2ping)" flags="EQ" epoch="0" ver="4.1"/>
+    </rpm:provides>
+    <rpm:requires>
+      <rpm:entry name="/usr/bin/python3"/>
+      <rpm:entry name="python(abi)" flags="EQ" epoch="0" ver="3.6"/>
+    </rpm:requires>
+    <file>/usr/bin/2ping</file>
+    <file>/usr/bin/2ping6</file>
+  </format>
+</package>
+<package type="rpm">
+  <name>389-admin</name>
+  <arch>i686</arch>
+  <version epoch="0" ver="1.1.46" rel="1.fc27.3"/>
+  <checksum type="sha256" pkgid="YES">43e928366b50d17488fee40c40f91121a98f530fa84893de1f3faa69a8216332</checksum>
+  <summary>389 Administration Server (admin)</summary>
+  <description>389 Administration Server is an HTTP agent that provides management features
+for 389 Directory Server.  It provides some management web apps that can
+be used through a web browser.  It provides the authentication, access control,
+and CGI utilities used by the console.</description>
+  <packager>Fedora Project</packager>
+  <url>http://www.port389.org/</url>
+  <time file="1502112100" build="1501693399"/>
+  <size package="417582" installed="1248173" archive="1286540"/>
+  <location href="Packages/3/389-admin-1.1.46-1.fc27.3.i686.rpm"/>
+  <format>
+    <rpm:license>GPLv2 and ASL 2.0</rpm:license>
+    <rpm:vendor>Fedora Project</rpm:vendor>
+    <rpm:group>System Environment/Daemons</rpm:group>
+    <rpm:buildhost>buildvm-12.phx2.fedoraproject.org</rpm:buildhost>
+    <rpm:sourcerpm>389-admin-1.1.46-1.fc27.3.src.rpm</rpm:sourcerpm>
+    <rpm:header-range start="4424" end="69326"/>
+    <rpm:provides>
+      <rpm:entry name="389-admin" flags="EQ" epoch="0" ver="1.1.46" rel="1.fc27.3"/>
+      <rpm:entry name="389-admin(x86-32)" flags="EQ" epoch="0" ver="1.1.46" rel="1.fc27.3"/>
+      <rpm:entry name="config(389-admin)" flags="EQ" epoch="0" ver="1.1.46" rel="1.fc27.3"/>
+      <rpm:entry name="libds-admin-serv.so.0"/>
+      <rpm:entry name="perl(ASDialogs)"/>
+      <rpm:entry name="perl(AdminMigration)"/>
+      <rpm:entry name="perl(AdminServer)"/>
+      <rpm:entry name="perl(AdminUtil)"/>
+      <rpm:entry name="perl(ConfigDSDialogs)"/>
+      <rpm:entry name="perl(RegDSDialogs)"/>
+    </rpm:provides>
+    <rpm:requires>
+      <rpm:entry name="/bin/sh"/>
+      <rpm:entry name="/usr/bin/env"/>
+      <rpm:entry name="389-ds-base"/>
+      <rpm:entry name="libadminutil.so.0"/>
+      <rpm:entry name="libadmsslutil.so.0"/>
+      <rpm:entry name="libicudata.so.57"/>
+      <rpm:entry name="libicui18n.so.57"/>
+      <rpm:entry name="libicuuc.so.57"/>
+      <rpm:entry name="libldap-2.4.so.2"/>
+      <rpm:entry name="libnspr4.so"/>
+      <rpm:entry name="libnss3.so"/>
+      <rpm:entry name="libnss3.so(NSS_3.2)"/>
+      <rpm:entry name="libnss3.so(NSS_3.3)"/>
+      <rpm:entry name="libnss3.so(NSS_3.5)"/>
+      <rpm:entry name="libnss3.so(NSS_3.9)"/>
+      <rpm:entry name="libnss3.so(NSS_3.9.2)"/>
+      <rpm:entry name="libplc4.so"/>
+      <rpm:entry name="libplds4.so"/>
+      <rpm:entry name="libsasl2.so.3"/>
+      <rpm:entry name="libsmime3.so"/>
+      <rpm:entry name="libsmime3.so(NSS_3.2)"/>
+      <rpm:entry name="libsoftokn3.so"/>
+      <rpm:entry name="libssl3.so"/>
+      <rpm:entry name="libssl3.so(NSS_3.2)"/>
+      <rpm:entry name="mod_nss"/>
+      <rpm:entry name="nss-tools"/>
+      <rpm:entry name="perl(CGI)"/>
+      <rpm:entry name="perl(DSCreate)"/>
+      <rpm:entry name="perl(DSMigration)"/>
+      <rpm:entry name="perl(DSUpdate)"/>
+      <rpm:entry name="perl(DSUtil)"/>
+      <rpm:entry name="perl(Dialog)"/>
+      <rpm:entry name="perl(DialogManager)"/>
+      <rpm:entry name="perl(Exporter)"/>
+      <rpm:entry name="perl(File::Basename)"/>
+      <rpm:entry name="perl(File::Copy)"/>
+      <rpm:entry name="perl(File::Path)"/>
+      <rpm:entry name="perl(File::Spec)"/>
+      <rpm:entry name="perl(File::Temp)"/>
+      <rpm:entry name="perl(FileConn)"/>
+      <rpm:entry name="perl(Inf)"/>
+      <rpm:entry name="perl(Migration)"/>
+      <rpm:entry name="perl(Mozilla::LDAP::API)"/>
+      <rpm:entry name="perl(Mozilla::LDAP::Conn)"/>
+      <rpm:entry name="perl(Mozilla::LDAP::LDIF)"/>
+      <rpm:entry name="perl(Mozilla::LDAP::Utils)"/>
+      <rpm:entry name="perl(POSIX)"/>
+      <rpm:entry name="perl(Resource)"/>
+      <rpm:entry name="perl(Setup)"/>
+      <rpm:entry name="perl(SetupLog)"/>
+      <rpm:entry name="perl(Sys::Hostname)"/>
+      <rpm:entry name="perl(lib)"/>
+      <rpm:entry name="perl(strict)"/>
+      <rpm:entry name="perl-Mozilla-LDAP"/>
+      <rpm:entry name="policycoreutils-python-utils"/>
+      <rpm:entry name="rtld(GNU_HASH)"/>
+      <rpm:entry name="systemd-units" pre="1"/>
+      <rpm:entry name="systemd-units"/>
+      <rpm:entry name="libc.so.6(GLIBC_2.7)"/>
+    </rpm:requires>
+    <file type="dir">/etc/dirsrv/admin-serv</file>
+    <file>/etc/dirsrv/admin-serv/admserv.conf</file>
+    <file>/etc/dirsrv/admin-serv/console.conf</file>
+    <file>/etc/dirsrv/admin-serv/httpd.conf</file>
+    <file>/etc/dirsrv/admin-serv/nss.conf</file>
+    <file>/etc/sysconfig/dirsrv-admin</file>
+    <file>/usr/lib/dirsrv/cgi-bin/ReadLog</file>
+    <file>/usr/lib/dirsrv/cgi-bin/admpw</file>
+    <file>/usr/lib/dirsrv/cgi-bin/config</file>
+    <file>/usr/lib/dirsrv/cgi-bin/download</file>
+    <file>/usr/lib/dirsrv/cgi-bin/ds_create</file>
+    <file>/usr/lib/dirsrv/cgi-bin/ds_listdb</file>
+    <file>/usr/lib/dirsrv/cgi-bin/ds_remove</file>
+    <file>/usr/lib/dirsrv/cgi-bin/ds_restart</file>
+    <file>/usr/lib/dirsrv/cgi-bin/ds_shutdown</file>
+    <file>/usr/lib/dirsrv/cgi-bin/ds_snmpctrl</file>
+    <file>/usr/lib/dirsrv/cgi-bin/ds_start</file>
+    <file>/usr/lib/dirsrv/cgi-bin/ds_unregister</file>
+    <file>/usr/lib/dirsrv/cgi-bin/dsconfig</file>
+    <file>/usr/lib/dirsrv/cgi-bin/help</file>
+    <file>/usr/lib/dirsrv/cgi-bin/htmladmin</file>
+    <file>/usr/lib/dirsrv/cgi-bin/monreplication</file>
+    <file>/usr/lib/dirsrv/cgi-bin/repl-monitor-cgi.pl</file>
+    <file>/usr/lib/dirsrv/cgi-bin/restartsrv</file>
+    <file>/usr/lib/dirsrv/cgi-bin/sec-activate</file>
+    <file>/usr/lib/dirsrv/cgi-bin/security</file>
+    <file>/usr/lib/dirsrv/cgi-bin/start_config_ds</file>
+    <file>/usr/lib/dirsrv/cgi-bin/statpingserv</file>
+    <file>/usr/lib/dirsrv/cgi-bin/statusping</file>
+    <file>/usr/lib/dirsrv/cgi-bin/stopsrv</file>
+    <file>/usr/lib/dirsrv/cgi-bin/ugdsconfig</file>
+    <file>/usr/lib/dirsrv/cgi-bin/viewdata</file>
+    <file>/usr/lib/dirsrv/cgi-bin/viewlog</file>
+    <file>/usr/sbin/ds_removal</file>
+    <file>/usr/sbin/ds_unregister</file>
+    <file>/usr/sbin/migrate-ds-admin.pl</file>
+    <file>/usr/sbin/register-ds-admin.pl</file>
+    <file>/usr/sbin/remove-ds-admin.pl</file>
+    <file>/usr/sbin/restart-ds-admin</file>
+    <file>/usr/sbin/setup-ds-admin.pl</file>
+    <file>/usr/sbin/start-ds-admin</file>
+    <file>/usr/sbin/stop-ds-admin</file>
+  </format>
+</package>
+<package type="rpm">
+  <name>389-admin</name>
+  <arch>x86_64</arch>
+  <version epoch="0" ver="1.1.46" rel="1.fc27.3"/>
+  <checksum type="sha256" pkgid="YES">25e9d3bfdfdf22292a2f2e07f5c4bb554bdd03e1c55965ebfc83b019d6226c5b</checksum>
+  <summary>389 Administration Server (admin)</summary>
+  <description>389 Administration Server is an HTTP agent that provides management features
+for 389 Directory Server.  It provides some management web apps that can
+be used through a web browser.  It provides the authentication, access control,
+and CGI utilities used by the console.</description>
+  <packager>Fedora Project</packager>
+  <url>http://www.port389.org/</url>
+  <time file="1502099220" build="1501693358"/>
+  <size package="417342" installed="1321985" archive="1360632"/>
+  <location href="Packages/3/389-admin-1.1.46-1.fc27.3.x86_64.rpm"/>
+  <format>
+    <rpm:license>GPLv2 and ASL 2.0</rpm:license>
+    <rpm:vendor>Fedora Project</rpm:vendor>
+    <rpm:group>System Environment/Daemons</rpm:group>
+    <rpm:buildhost>buildvm-02.phx2.fedoraproject.org</rpm:buildhost>
+    <rpm:sourcerpm>389-admin-1.1.46-1.fc27.3.src.rpm</rpm:sourcerpm>
+    <rpm:header-range start="4424" end="69562"/>
+    <rpm:provides>
+      <rpm:entry name="389-admin" flags="EQ" epoch="0" ver="1.1.46" rel="1.fc27.3"/>
+      <rpm:entry name="389-admin(x86-64)" flags="EQ" epoch="0" ver="1.1.46" rel="1.fc27.3"/>
+      <rpm:entry name="config(389-admin)" flags="EQ" epoch="0" ver="1.1.46" rel="1.fc27.3"/>
+      <rpm:entry name="libds-admin-serv.so.0()(64bit)"/>
+      <rpm:entry name="perl(ASDialogs)"/>
+      <rpm:entry name="perl(AdminMigration)"/>
+      <rpm:entry name="perl(AdminServer)"/>
+      <rpm:entry name="perl(AdminUtil)"/>
+      <rpm:entry name="perl(ConfigDSDialogs)"/>
+      <rpm:entry name="perl(RegDSDialogs)"/>
+    </rpm:provides>
+    <rpm:requires>
+      <rpm:entry name="/bin/sh"/>
+      <rpm:entry name="/usr/bin/env"/>
+      <rpm:entry name="389-ds-base"/>
+      <rpm:entry name="libadminutil.so.0()(64bit)"/>
+      <rpm:entry name="libadmsslutil.so.0()(64bit)"/>
+      <rpm:entry name="libicudata.so.57()(64bit)"/>
+      <rpm:entry name="libicui18n.so.57()(64bit)"/>
+      <rpm:entry name="libicuuc.so.57()(64bit)"/>
+      <rpm:entry name="libldap-2.4.so.2()(64bit)"/>
+      <rpm:entry name="libnspr4.so()(64bit)"/>
+      <rpm:entry name="libnss3.so()(64bit)"/>
+      <rpm:entry name="libnss3.so(NSS_3.2)(64bit)"/>
+      <rpm:entry name="libnss3.so(NSS_3.3)(64bit)"/>
+      <rpm:entry name="libnss3.so(NSS_3.5)(64bit)"/>
+      <rpm:entry name="libnss3.so(NSS_3.9)(64bit)"/>
+      <rpm:entry name="libnss3.so(NSS_3.9.2)(64bit)"/>
+      <rpm:entry name="libplc4.so()(64bit)"/>
+      <rpm:entry name="libplds4.so()(64bit)"/>
+      <rpm:entry name="libsasl2.so.3()(64bit)"/>
+      <rpm:entry name="libsmime3.so()(64bit)"/>
+      <rpm:entry name="libsmime3.so(NSS_3.2)(64bit)"/>
+      <rpm:entry name="libsoftokn3.so()(64bit)"/>
+      <rpm:entry name="libssl3.so()(64bit)"/>
+      <rpm:entry name="libssl3.so(NSS_3.2)(64bit)"/>
+      <rpm:entry name="mod_nss"/>
+      <rpm:entry name="nss-tools"/>
+      <rpm:entry name="perl(CGI)"/>
+      <rpm:entry name="perl(DSCreate)"/>
+      <rpm:entry name="perl(DSMigration)"/>
+      <rpm:entry name="perl(DSUpdate)"/>
+      <rpm:entry name="perl(DSUtil)"/>
+      <rpm:entry name="perl(Dialog)"/>
+      <rpm:entry name="perl(DialogManager)"/>
+      <rpm:entry name="perl(Exporter)"/>
+      <rpm:entry name="perl(File::Basename)"/>
+      <rpm:entry name="perl(File::Copy)"/>
+      <rpm:entry name="perl(File::Path)"/>
+      <rpm:entry name="perl(File::Spec)"/>
+      <rpm:entry name="perl(File::Temp)"/>
+      <rpm:entry name="perl(FileConn)"/>
+      <rpm:entry name="perl(Inf)"/>
+      <rpm:entry name="perl(Migration)"/>
+      <rpm:entry name="perl(Mozilla::LDAP::API)"/>
+      <rpm:entry name="perl(Mozilla::LDAP::Conn)"/>
+      <rpm:entry name="perl(Mozilla::LDAP::LDIF)"/>
+      <rpm:entry name="perl(Mozilla::LDAP::Utils)"/>
+      <rpm:entry name="perl(POSIX)"/>
+      <rpm:entry name="perl(Resource)"/>
+      <rpm:entry name="perl(Setup)"/>
+      <rpm:entry name="perl(SetupLog)"/>
+      <rpm:entry name="perl(Sys::Hostname)"/>
+      <rpm:entry name="perl(lib)"/>
+      <rpm:entry name="perl(strict)"/>
+      <rpm:entry name="perl-Mozilla-LDAP"/>
+      <rpm:entry name="policycoreutils-python-utils"/>
+      <rpm:entry name="rtld(GNU_HASH)"/>
+      <rpm:entry name="systemd-units" pre="1"/>
+      <rpm:entry name="systemd-units"/>
+      <rpm:entry name="libc.so.6(GLIBC_2.14)(64bit)"/>
+    </rpm:requires>
+    <file type="dir">/etc/dirsrv/admin-serv</file>
+    <file>/etc/dirsrv/admin-serv/admserv.conf</file>
+    <file>/etc/dirsrv/admin-serv/console.conf</file>
+    <file>/etc/dirsrv/admin-serv/httpd.conf</file>
+    <file>/etc/dirsrv/admin-serv/nss.conf</file>
+    <file>/etc/sysconfig/dirsrv-admin</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/ReadLog</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/admpw</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/config</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/download</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/ds_create</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/ds_listdb</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/ds_remove</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/ds_restart</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/ds_shutdown</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/ds_snmpctrl</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/ds_start</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/ds_unregister</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/dsconfig</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/help</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/htmladmin</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/monreplication</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/repl-monitor-cgi.pl</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/restartsrv</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/sec-activate</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/security</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/start_config_ds</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/statpingserv</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/statusping</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/stopsrv</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/ugdsconfig</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/viewdata</file>
+    <file>/usr/lib64/dirsrv/cgi-bin/viewlog</file>
+    <file>/usr/sbin/ds_removal</file>
+    <file>/usr/sbin/ds_unregister</file>
+    <file>/usr/sbin/migrate-ds-admin.pl</file>
+    <file>/usr/sbin/register-ds-admin.pl</file>
+    <file>/usr/sbin/remove-ds-admin.pl</file>
+    <file>/usr/sbin/restart-ds-admin</file>
+    <file>/usr/sbin/setup-ds-admin.pl</file>
+    <file>/usr/sbin/start-ds-admin</file>
+    <file>/usr/sbin/stop-ds-admin</file>
+  </format>
+</package>
+<package type="rpm">
+  <name>389-admin-console</name>
+  <arch>noarch</arch>
+  <version epoch="0" ver="1.1.12" rel="3.fc27"/>
+  <checksum type="sha256" pkgid="YES">061bde9132adaaead8c51b5ef8dfa5d836e4ff3209874763feecd3218cf31a1b</checksum>
+  <summary>389 Admin Server Management Console</summary>
+  <description>A Java based remote management console used for Managing 389
+Admin Server.  Requires the 389 Console to load and run the
+jar files.</description>
+  <packager>Fedora Project</packager>
+  <url>http://www.port389.org</url>
+  <time file="1501632309" build="1501033140"/>
+  <size package="212930" installed="229334" archive="230800"/>
+  <location href="Packages/3/389-admin-console-1.1.12-3.fc27.noarch.rpm"/>
+  <format>
+    <rpm:license>GPLv3</rpm:license>
+    <rpm:vendor>Fedora Project</rpm:vendor>
+    <rpm:group>Applications/System</rpm:group>
+    <rpm:buildhost>buildvm-21.phx2.fedoraproject.org</rpm:buildhost>
+    <rpm:sourcerpm>389-admin-console-1.1.12-3.fc27.src.rpm</rpm:sourcerpm>
+    <rpm:header-range start="4424" end="11462"/>
+    <rpm:provides>
+      <rpm:entry name="389-admin-console" flags="EQ" epoch="0" ver="1.1.12" rel="3.fc27"/>
+      <rpm:entry name="fedora-ds-admin-console" flags="EQ" epoch="0" ver="1.1.12" rel="3.fc27"/>
+    </rpm:provides>
+    <rpm:requires>
+      <rpm:entry name="389-admin"/>
+    </rpm:requires>
+    <rpm:obsoletes>
+      <rpm:entry name="fedora-ds-admin-console" flags="LT" epoch="0" ver="1.1.4" rel="1"/>
+    </rpm:obsoletes>
+  </format>
+</package>
+<package type="rpm">
+  <name>389-admin-console-doc</name>
+  <arch>noarch</arch>
+  <version epoch="0" ver="1.1.12" rel="3.fc27"/>
+  <checksum type="sha256" pkgid="YES">5abbd3057c4fd3dd3b27d9ca7aa0762ea41398cef019917ed374d351aac8f8ec</checksum>
+  <summary>Web docs for 389 Admin Server Management Console</summary>
+  <description>Web docs for 389 Admin Server Management Console</description>
+  <packager>Fedora Project</packager>
+  <url>http://www.port389.org</url>
+  <time file="1501635750" build="1501033140"/>
+  <size package="48834" installed="97302" archive="116188"/>
+  <location href="Packages/3/389-admin-console-doc-1.1.12-3.fc27.noarch.rpm"/>
+  <format>
+    <rpm:license>GPLv3</rpm:license>
+    <rpm:vendor>Fedora Project</rpm:vendor>
+    <rpm:group>Documentation</rpm:group>
+    <rpm:buildhost>buildvm-21.phx2.fedoraproject.org</rpm:buildhost>
+    <rpm:sourcerpm>389-admin-console-1.1.12-3.fc27.src.rpm</rpm:sourcerpm>
+    <rpm:header-range start="4424" end="25750"/>
+    <rpm:provides>
+      <rpm:entry name="389-admin-console-doc" flags="EQ" epoch="0" ver="1.1.12" rel="3.fc27"/>
+    </rpm:provides>
+    <rpm:requires>
+      <rpm:entry name="389-admin-console" flags="EQ" epoch="0" ver="1.1.12" rel="3.fc27"/>
+    </rpm:requires>
+  </format>
+</package>
+<package type="rpm">
+  <name>389-adminutil</name>
+  <arch>i686</arch>
+  <version epoch="0" ver="1.1.23" rel="4.fc27"/>
+  <checksum type="sha256" pkgid="YES">878ded91c91647986d8599a8f2ded8bf4b7b5e6f6ec1044b963a9c7451188a8f</checksum>
+  <summary>Utility library for 389 administration</summary>
+  <description>389-adminutil is libraries of functions used to administer directory
+servers, usually in conjunction with the admin server.  389-adminutil is
+broken into two libraries - libadminutil contains the basic
+functionality, and libadmsslutil contains SSL versions and wrappers
+around the basic functions.  The PSET functions allow applications to
+store their preferences and configuration parameters in LDAP, without
+having to know anything about LDAP.  The configuration is cached in a
+local file, allowing applications to function even if the LDAP server
+is down.  The other code is typically used by CGI programs used for
+directory server management, containing GET/POST processing code as
+well as resource handling (ICU ures API).</description>
+  <packager>Fedora Project</packager>
+  <url>http://port389.org/wiki/AdminUtil</url>
+  <time file="1501971257" build="1501693183"/>
+  <size package="85706" installed="182916" archive="185656"/>
+  <location href="Packages/3/389-adminutil-1.1.23-4.fc27.i686.rpm"/>
+  <format>
+    <rpm:license>GPLv3</rpm:license>
+    <rpm:vendor>Fedora Project</rpm:vendor>
+    <rpm:group>Development/Libraries</rpm:group>
+    <rpm:buildhost>buildhw-03.phx2.fedoraproject.org</rpm:buildhost>
+    <rpm:sourcerpm>389-adminutil-1.1.23-4.fc27.src.rpm</rpm:sourcerpm>
+    <rpm:header-range start="4424" end="17190"/>
+    <rpm:provides>
+      <rpm:entry name="389-adminutil" flags="EQ" epoch="0" ver="1.1.23" rel="4.fc27"/>
+      <rpm:entry name="389-adminutil(x86-32)" flags="EQ" epoch="0" ver="1.1.23" rel="4.fc27"/>
+      <rpm:entry name="adminutil" flags="EQ" epoch="0" ver="1.1.23" rel="4.fc27"/>
+      <rpm:entry name="libadminutil.so.0"/>
+      <rpm:entry name="libadmsslutil.so.0"/>
+    </rpm:provides>
+    <rpm:requires>
+      <rpm:entry name="/sbin/ldconfig" pre="1"/>
+      <rpm:entry name="/sbin/ldconfig"/>
+      <rpm:entry name="libicudata.so.57"/>
+      <rpm:entry name="libicui18n.so.57"/>
+      <rpm:entry name="libicuuc.so.57"/>
+      <rpm:entry name="libldap-2.4.so.2"/>
+      <rpm:entry name="libnspr4.so"/>
+      <rpm:entry name="libnss3.so"/>
+      <rpm:entry name="libnss3.so(NSS_3.2)"/>
+      <rpm:entry name="libnss3.so(NSS_3.5)"/>
+      <rpm:entry name="libplc4.so"/>
+      <rpm:entry name="libssl3.so"/>
+      <rpm:entry name="libssl3.so(NSS_3.14)"/>
+      <rpm:entry name="libssl3.so(NSS_3.2)"/>
+      <rpm:entry name="rtld(GNU_HASH)"/>
+      <rpm:entry name="libc.so.6(GLIBC_2.7)"/>
+    </rpm:requires>
+    <rpm:obsoletes>
+      <rpm:entry name="adminutil" flags="LT" epoch="0" ver="1.1.8" rel="2"/>
+    </rpm:obsoletes>
+  </format>
+</package>
+<package type="rpm">
+  <name>389-adminutil</name>
+  <arch>x86_64</arch>
+  <version epoch="0" ver="1.1.23" rel="4.fc27"/>
+  <checksum type="sha256" pkgid="YES">2f85af0c4361b3b9bd8ddbcd49cfbb67b0703cabe56af626e9210ee0b7e41b7b</checksum>
+  <summary>Utility library for 389 administration</summary>
+  <description>389-adminutil is libraries of functions used to administer directory
+servers, usually in conjunction with the admin server.  389-adminutil is
+broken into two libraries - libadminutil contains the basic
+functionality, and libadmsslutil contains SSL versions and wrappers
+around the basic functions.  The PSET functions allow applications to
+store their preferences and configuration parameters in LDAP, without
+having to know anything about LDAP.  The configuration is cached in a
+local file, allowing applications to function even if the LDAP server
+is down.  The other code is typically used by CGI programs used for
+directory server management, containing GET/POST processing code as
+well as resource handling (ICU ures API).</description>
+  <packager>Fedora Project</packager>
+  <url>http://port389.org/wiki/AdminUtil</url>
+  <time file="1502101322" build="1501693271"/>
+  <size package="81990" installed="192348" archive="195096"/>
+  <location href="Packages/3/389-adminutil-1.1.23-4.fc27.x86_64.rpm"/>
+  <format>
+    <rpm:license>GPLv3</rpm:license>
+    <rpm:vendor>Fedora Project</rpm:vendor>
+    <rpm:group>Development/Libraries</rpm:group>
+    <rpm:buildhost>buildvm-08.phx2.fedoraproject.org</rpm:buildhost>
+    <rpm:sourcerpm>389-adminutil-1.1.23-4.fc27.src.rpm</rpm:sourcerpm>
+    <rpm:header-range start="4424" end="17314"/>
+    <rpm:provides>
+      <rpm:entry name="389-adminutil" flags="EQ" epoch="0" ver="1.1.23" rel="4.fc27"/>
+      <rpm:entry name="389-adminutil(x86-64)" flags="EQ" epoch="0" ver="1.1.23" rel="4.fc27"/>
+      <rpm:entry name="adminutil" flags="EQ" epoch="0" ver="1.1.23" rel="4.fc27"/>
+      <rpm:entry name="libadminutil.so.0()(64bit)"/>
+      <rpm:entry name="libadmsslutil.so.0()(64bit)"/>
+    </rpm:provides>
+    <rpm:requires>
+      <rpm:entry name="/sbin/ldconfig" pre="1"/>
+      <rpm:entry name="/sbin/ldconfig"/>
+      <rpm:entry name="libicudata.so.57()(64bit)"/>
+      <rpm:entry name="libicui18n.so.57()(64bit)"/>
+      <rpm:entry name="libicuuc.so.57()(64bit)"/>
+      <rpm:entry name="libldap-2.4.so.2()(64bit)"/>
+      <rpm:entry name="libnspr4.so()(64bit)"/>
+      <rpm:entry name="libnss3.so()(64bit)"/>
+      <rpm:entry name="libnss3.so(NSS_3.2)(64bit)"/>
+      <rpm:entry name="libnss3.so(NSS_3.5)(64bit)"/>
+      <rpm:entry name="libplc4.so()(64bit)"/>
+      <rpm:entry name="libssl3.so()(64bit)"/>
+      <rpm:entry name="libssl3.so(NSS_3.14)(64bit)"/>
+      <rpm:entry name="libssl3.so(NSS_3.2)(64bit)"/>
+      <rpm:entry name="rtld(GNU_HASH)"/>
+      <rpm:entry name="libc.so.6(GLIBC_2.14)(64bit)"/>
+    </rpm:requires>
+    <rpm:obsoletes>
+      <rpm:entry name="adminutil" flags="LT" epoch="0" ver="1.1.8" rel="2"/>
+    </rpm:obsoletes>
+  </format>
+</package>
+<package type="rpm">
+  <name>389-adminutil-devel</name>
+  <arch>i686</arch>
+  <version epoch="0" ver="1.1.23" rel="4.fc27"/>
+  <checksum type="sha256" pkgid="YES">b17655524fe44883b18698ed635dd03ca716249b04bc96db3e41040a08b6ba00</checksum>
+  <summary>Development and header files for 389-adminutil</summary>
+  <description>Development files and header files necessary to build applications
+that use 389-adminutil.</description>
+  <packager>Fedora Project</packager>
+  <url>http://port389.org/wiki/AdminUtil</url>
+  <time file="1502105124" build="1501693183"/>
+  <size package="34206" installed="83636" archive="86168"/>
+  <location href="Packages/3/389-adminutil-devel-1.1.23-4.fc27.i686.rpm"/>
+  <format>
+    <rpm:license>GPLv3</rpm:license>
+    <rpm:vendor>Fedora Project</rpm:vendor>
+    <rpm:group>Development/Libraries</rpm:group>
+    <rpm:buildhost>buildhw-03.phx2.fedoraproject.org</rpm:buildhost>
+    <rpm:sourcerpm>389-adminutil-1.1.23-4.fc27.src.rpm</rpm:sourcerpm>
+    <rpm:header-range start="4424" end="15818"/>
+    <rpm:provides>
+      <rpm:entry name="389-adminutil-devel" flags="EQ" epoch="0" ver="1.1.23" rel="4.fc27"/>
+      <rpm:entry name="389-adminutil-devel(x86-32)" flags="EQ" epoch="0" ver="1.1.23" rel="4.fc27"/>
+      <rpm:entry name="adminutil-devel" flags="EQ" epoch="0" ver="1.1.23" rel="4.fc27"/>
+      <rpm:entry name="pkgconfig(389-adminutil)" flags="EQ" epoch="0" ver="1.1.23"/>
+    </rpm:provides>
+    <rpm:requires>
+      <rpm:entry name="/usr/bin/pkg-config"/>
+      <rpm:entry name="389-adminutil" flags="EQ" epoch="0" ver="1.1.23" rel="4.fc27"/>
+      <rpm:entry name="libadminutil.so.0"/>
+      <rpm:entry name="libadmsslutil.so.0"/>
+      <rpm:entry name="libicu-devel"/>
+      <rpm:entry name="nspr-devel"/>
+      <rpm:entry name="nss-devel"/>
+      <rpm:entry name="openldap-devel"/>
+      <rpm:entry name="pkgconfig"/>
+      <rpm:entry name="pkgconfig(nspr)"/>
+      <rpm:entry name="pkgconfig(nss)"/>
+    </rpm:requires>
+    <rpm:obsoletes>
+      <rpm:entry name="adminutil-devel" flags="LT" epoch="0" ver="1.1.8" rel="2"/>
+    </rpm:obsoletes>
+  </format>
+</package>
+<package type="rpm">
+  <name>389-adminutil-devel</name>
+  <arch>x86_64</arch>
+  <version epoch="0" ver="1.1.23" rel="4.fc27"/>
+  <checksum type="sha256" pkgid="YES">7b1a44c063c20db9a9fae37196a8f447bbce82cd485fb1c03cca26a2046e5a27</checksum>
+  <summary>Development and header files for 389-adminutil</summary>
+  <description>Development files and header files necessary to build applications
+that use 389-adminutil.</description>
+  <packager>Fedora Project</packager>
+  <url>http://port389.org/wiki/AdminUtil</url>
+  <time file="1502111235" build="1501693271"/>
+  <size package="34206" installed="83638" archive="86180"/>
+  <location href="Packages/3/389-adminutil-devel-1.1.23-4.fc27.x86_64.rpm"/>
+  <format>
+    <rpm:license>GPLv3</rpm:license>
+    <rpm:vendor>Fedora Project</rpm:vendor>
+    <rpm:group>Development/Libraries</rpm:group>
+    <rpm:buildhost>buildvm-08.phx2.fedoraproject.org</rpm:buildhost>
+    <rpm:sourcerpm>389-adminutil-1.1.23-4.fc27.src.rpm</rpm:sourcerpm>
+    <rpm:header-range start="4424" end="15814"/>
+    <rpm:provides>
+      <rpm:entry name="389-adminutil-devel" flags="EQ" epoch="0" ver="1.1.23" rel="4.fc27"/>
+      <rpm:entry name="389-adminutil-devel(x86-64)" flags="EQ" epoch="0" ver="1.1.23" rel="4.fc27"/>
+      <rpm:entry name="adminutil-devel" flags="EQ" epoch="0" ver="1.1.23" rel="4.fc27"/>
+      <rpm:entry name="pkgconfig(389-adminutil)" flags="EQ" epoch="0" ver="1.1.23"/>
+    </rpm:provides>
+    <rpm:requires>
+      <rpm:entry name="/usr/bin/pkg-config"/>
+      <rpm:entry name="389-adminutil" flags="EQ" epoch="0" ver="1.1.23" rel="4.fc27"/>
+      <rpm:entry name="libadminutil.so.0()(64bit)"/>
+      <rpm:entry name="libadmsslutil.so.0()(64bit)"/>
+      <rpm:entry name="libicu-devel"/>
+      <rpm:entry name="nspr-devel"/>
+      <rpm:entry name="nss-devel"/>
+      <rpm:entry name="openldap-devel"/>
+      <rpm:entry name="pkgconfig"/>
+      <rpm:entry name="pkgconfig(nspr)"/>
+      <rpm:entry name="pkgconfig(nss)"/>
+    </rpm:requires>
+    <rpm:obsoletes>
+      <rpm:entry name="adminutil-devel" flags="LT" epoch="0" ver="1.1.8" rel="2"/>
+    </rpm:obsoletes>
+  </format>
+</package>
+<package type="rpm">
+  <name>389-console</name>
+  <arch>noarch</arch>
+  <version epoch="0" ver="1.1.18" rel="3.fc27"/>
+  <checksum type="sha256" pkgid="YES">16ece53c2a7acf43cb915e452992c91d07d40c360db43c010ab6a6a1d5a9d3da</checksum>
+  <summary>389 Management Console</summary>
+  <description>A Java based remote management console used for managing 389
+Administration Server and 389 Directory Server.</description>
+  <packager>Fedora Project</packager>
+  <url>http://port389.org</url>
+  <time file="1501633303" build="1501033184"/>
+  <size package="79958" installed="82314" archive="83300"/>
+  <location href="Packages/3/389-console-1.1.18-3.fc27.noarch.rpm"/>
+  <format>
+    <rpm:license>LGPLv2</rpm:license>
+    <rpm:vendor>Fedora Project</rpm:vendor>
+    <rpm:group>Applications/System</rpm:group>
+    <rpm:buildhost>buildvm-06.phx2.fedoraproject.org</rpm:buildhost>
+    <rpm:sourcerpm>389-console-1.1.18-3.fc27.src.rpm</rpm:sourcerpm>
+    <rpm:header-range start="4424" end="10946"/>
+    <rpm:provides>
+      <rpm:entry name="389-console" flags="EQ" epoch="0" ver="1.1.18" rel="3.fc27"/>
+    </rpm:provides>
+    <rpm:requires>
+      <rpm:entry name="/bin/bash"/>
+      <rpm:entry name="idm-console-framework"/>
+      <rpm:entry name="java-headless" flags="GE" epoch="0" ver="1.8.0"/>
+      <rpm:entry name="jpackage-utils"/>
+    </rpm:requires>
+    <file>/etc/java/389-console.conf</file>
+    <file>/usr/bin/389-console</file>
+  </format>
+</package>
+</metadata>
