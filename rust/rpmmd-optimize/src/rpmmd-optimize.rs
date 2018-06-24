@@ -7,26 +7,15 @@ extern crate serde_xml_rs;
 extern crate serde_derive;
 
 use failure::{err_msg, Error};
-use std::io::{Read, Write};
+use std::io;
 use std::path::Path;
-use std::str::FromStr;
-use std::time::Duration;
-use std::{fs, io, thread};
 
 use clap::{App, Arg};
-use serde_xml_rs::deserialize;
 use xml::reader::{EventReader, XmlEvent};
-use xml::writer::{EmitterConfig, EventWriter};
+use xml::writer::EmitterConfig;
 
 mod repomd;
 use repomd::*;
-
-fn write_event<W: Write>(
-    writer: &mut EventWriter<W>,
-    event: xml::writer::events::XmlEvent,
-) -> Result<(), Error> {
-    writer.write(event).map_err(err_msg)
-}
 
 fn filter_filelists<S: AsRef<Path>, D: AsRef<Path>>(in_path: S, out_path: D) -> Result<(), Error> {
     let in_path = in_path.as_ref();
@@ -59,7 +48,7 @@ fn filter_filelists<S: AsRef<Path>, D: AsRef<Path>>(in_path: S, out_path: D) -> 
                 }
                 _ => {
                     if let Some(we) = event.as_writer_event() {
-                        write_event(&mut writer, we)?
+                        writer.write(we).map_err(err_msg)?
                     }
                 }
             },
@@ -67,7 +56,7 @@ fn filter_filelists<S: AsRef<Path>, D: AsRef<Path>>(in_path: S, out_path: D) -> 
                 "file" => in_file = false,
                 _ => {
                     if let Some(we) = event.as_writer_event() {
-                        write_event(&mut writer, we)?
+                        writer.write(we).map_err(err_msg)?
                     }
                 }
             },

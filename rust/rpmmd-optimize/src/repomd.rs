@@ -1,15 +1,3 @@
-use failure::{err_msg, Error};
-use std::io::{Read, Write};
-use std::path::Path;
-use std::str::FromStr;
-use std::time::Duration;
-use std::{fs, io, thread};
-
-use clap::{App, Arg};
-use serde_xml_rs::deserialize;
-use xml::reader::{EventReader, XmlEvent};
-use xml::writer::{EmitterConfig, EventWriter};
-
 #[derive(Debug, Deserialize)]
 pub struct RepoMD {
     pub revision: u64,
@@ -42,6 +30,7 @@ pub struct PackageVersion {
     pub rel: String,
 }
 
+#[allow(dead_code)]
 pub struct PackageId {
     pub name: String,
     pub epoch: u32,
