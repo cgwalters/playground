@@ -16,43 +16,8 @@ use xml::reader::{EventReader, XmlEvent};
 use xml::writer::{EventWriter, EmitterConfig};
 use serde_xml_rs::deserialize;
 
-#[derive(Debug, Deserialize)]
-struct RepoMD {
-    revision : u64,
-    data: Vec<RepoDataItem>,
-}
-
-#[derive(Debug, Deserialize)]
-struct RepoDataLocation {
-    href: String,
-}
-
-#[derive(Debug, Deserialize)]
-struct RepoDataItem {
-    checksum: String,
-    #[serde(rename = "open-checksum")]
-    open_checksum: Option<String>,
-    location: RepoDataLocation,
-    timestamp: u64,
-    size: u64,
-    #[serde(rename = "open-size")]
-    open_size: Option<u64>,
-}
-
-#[derive(Debug, Deserialize)]
-struct PackageVersion {
-    epoch: u32,
-    ver: String,
-    rel: String
-}
-
-struct PackageId {
-    name: String,
-    epoch: u32,
-    ver: String,
-    rel: String,
-    arch: String,
-}
+mod repomd;
+use repomd::*;
 
 fn write_event<W: Write>(writer: &mut EventWriter<W>, event: xml::writer::events::XmlEvent) -> Result<(), Error> {
     writer.write(event).map_err(err_msg)
@@ -119,6 +84,7 @@ fn run(srcdir: &str, destdir: &str) -> Result<(), Error> {
     let repodata_in = std::fs::File::open(repodata_p)?;
     let repodata_in = io::BufReader::new(repodata_in);
     let repomd : RepoMD = serde_xml_rs::deserialize(repodata_in)?;
+    eprintln!("{:?}", repomd);
     Ok(())
 }
 
