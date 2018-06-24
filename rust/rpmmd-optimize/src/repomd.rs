@@ -1,18 +1,18 @@
-use failure::{Error, err_msg};
-use std::io::{Read,Write};
-use std::{io,thread,fs};
+use failure::{err_msg, Error};
+use std::io::{Read, Write};
 use std::path::Path;
 use std::str::FromStr;
 use std::time::Duration;
+use std::{fs, io, thread};
 
-use clap::{Arg, App};
-use xml::reader::{EventReader, XmlEvent};
-use xml::writer::{EventWriter, EmitterConfig};
+use clap::{App, Arg};
 use serde_xml_rs::deserialize;
+use xml::reader::{EventReader, XmlEvent};
+use xml::writer::{EmitterConfig, EventWriter};
 
 #[derive(Debug, Deserialize)]
 pub struct RepoMD {
-    pub revision : u64,
+    pub revision: u64,
     pub data: Vec<RepoDataItem>,
 }
 
@@ -39,7 +39,7 @@ pub struct RepoDataItem {
 pub struct PackageVersion {
     pub epoch: u32,
     pub ver: String,
-    pub rel: String
+    pub rel: String,
 }
 
 pub struct PackageId {
