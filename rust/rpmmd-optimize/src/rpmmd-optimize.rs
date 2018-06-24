@@ -1,5 +1,6 @@
 extern crate clap;
 extern crate xml;
+#[macro_use]
 extern crate failure;
 extern crate serde_xml_rs;
 #[macro_use] extern crate serde_derive;
@@ -23,10 +24,14 @@ fn write_event<W: Write>(writer: &mut EventWriter<W>, event: xml::writer::events
     writer.write(event).map_err(err_msg)
 }
 
-fn filter_filelists(in_path: &str, out_path: &str) -> Result<(), Error> {
+fn filter_filelists<S: AsRef<Path>, D: AsRef<Path>>(in_path: S, out_path: D) -> Result<(), Error> {
+    let in_path = in_path.as_ref();
+    let out_path = out_path.as_ref();
+    eprintln!("src: {:?} dest: {:?}", in_path, out_path);
     let inf = std::fs::File::open(in_path)?;
     let inf = io::BufReader::new(inf);
-    let outf = std::fs::File::create(out_path)?;
+    let out_filelists = out_path.clone().join("filelists.xml");
+    let outf = std::fs::File::create(out_filelists)?;
     let parser = EventReader::new(inf);
     let mut writer = EmitterConfig::new().perform_indent(true).create_writer(&outf);
 
@@ -79,12 +84,27 @@ fn filter_filelists(in_path: &str, out_path: &str) -> Result<(), Error> {
 fn run(srcdir: &str, destdir: &str) -> Result<(), Error> {
     let srcp = Path::new(srcdir);
     let destp = Path::new(destdir);
+    let dest_repodatap = destp.clone().join("repodata");
+    std::fs::create_dir(&dest_repodatap)?;
 
-    let repodata_p = srcp.join("repomd.xml");
-    let repodata_in = std::fs::File::open(repodata_p)?;
+    let src_repomd_p = srcp.join("repomd.xml");
+    let repodata_in = std::fs::File::open(src_repomd_p)?;
     let repodata_in = io::BufReader::new(repodata_in);
     let repomd : RepoMD = serde_xml_rs::deserialize(repodata_in)?;
     eprintln!("{:?}", repomd);
+    for v in &repomd.data {
+        match v.repodatatype.as_str() {
+            "filelists" => {
+                if let Some(filelist_path) = v.location.href.rsplit('/').next() {
+                    let filelist_path = srcp.clone().join(filelist_path);
+                    filter_filelists(&filelist_path, &dest_repodatap)?
+                } else {
+                    bail!("Invalid filelists href \"{}\"", v.location.href);
+                }
+            },
+            _ => {}
+        }
+    }
     Ok(())
 }
 

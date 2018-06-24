@@ -12,40 +12,40 @@ use serde_xml_rs::deserialize;
 
 #[derive(Debug, Deserialize)]
 pub struct RepoMD {
-    revision : u64,
-    data: Vec<RepoDataItem>,
+    pub revision : u64,
+    pub data: Vec<RepoDataItem>,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct RepoDataLocation {
-    href: String,
+    pub href: String,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct RepoDataItem {
     #[serde(rename = "type")]
-    repodatatype: String,
-    checksum: String,
+    pub repodatatype: String,
+    pub checksum: String,
     #[serde(rename = "open-checksum")]
-    open_checksum: Option<String>,
-    location: RepoDataLocation,
-    timestamp: u64,
-    size: u64,
+    pub open_checksum: Option<String>,
+    pub location: RepoDataLocation,
+    pub timestamp: u64,
+    pub size: u64,
     #[serde(rename = "open-size")]
-    open_size: Option<u64>,
+    pub open_size: Option<u64>,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct PackageVersion {
-    epoch: u32,
-    ver: String,
-    rel: String
+    pub epoch: u32,
+    pub ver: String,
+    pub rel: String
 }
 
 pub struct PackageId {
-    name: String,
-    epoch: u32,
-    ver: String,
-    rel: String,
-    arch: String,
+    pub name: String,
+    pub epoch: u32,
+    pub ver: String,
+    pub rel: String,
+    pub arch: String,
 }
