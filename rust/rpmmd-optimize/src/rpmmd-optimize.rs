@@ -17,63 +17,67 @@ use xml::writer::EmitterConfig;
 mod repomd;
 use repomd::*;
 
-fn filter_filelists<S: AsRef<Path>, D: AsRef<Path>>(in_path: S, out_path: D) -> Result<(), Error> {
-    let in_path = in_path.as_ref();
-    let out_path = out_path.as_ref();
-    eprintln!("src: {:?} dest: {:?}", in_path, out_path);
-    let inf = std::fs::File::open(in_path)?;
-    let inf = io::BufReader::new(inf);
-    let out_filelists = out_path.clone().join("filelists.xml");
-    let outf = std::fs::File::create(out_filelists)?;
-    let parser = EventReader::new(inf);
-    let mut writer = EmitterConfig::new()
-        .perform_indent(true)
-        .create_writer(&outf);
-
-    // For <file>
-    let mut in_file = false;
-    let mut is_dir = false;
-    // Loop
-    for event in parser {
+fn await_start_element<I>(start_element: &str, events: &mut I) -> Result<Option<XmlEvent>, Error>
+where
+    I: Iterator<Item = Result<XmlEvent, xml::reader::Error>>,
+{
+    for event in events {
         let event = event?;
-        match &event {
-            &XmlEvent::StartElement {
-                name: ref eltname,
-                ref attributes,
-                ..
-            } => match &eltname.local_name[..] {
-                "file" => {
-                    is_dir = attributes.iter().any(|a| a.name.local_name == "dir");
-                    in_file = true;
-                }
-                _ => {
-                    if let Some(we) = event.as_writer_event() {
-                        writer.write(we).map_err(err_msg)?
-                    }
-                }
-            },
-            &XmlEvent::EndElement { name: ref eltname } => match &eltname.local_name[..] {
-                "file" => in_file = false,
-                _ => {
-                    if let Some(we) = event.as_writer_event() {
-                        writer.write(we).map_err(err_msg)?
-                    }
-                }
-            },
-            &XmlEvent::Characters(ref txt) => {
-                if in_file {
-                    if is_dir {
-                        println!("dir={}", txt);
-                    } else {
-                        println!("file={}", txt);
-                    }
-                }
+        let matches = match &event {
+            XmlEvent::StartElement { name, .. } => &name.local_name[..] == start_element,
+            _ => false,
+        };
+        if matches {
+            return Ok(Some(event));
+        }
+    }
+    Ok(None)
+}
+
+fn xml_package_stream_map<R, F>(start_element: &str, input: R, f: &mut F) -> Result<(), Error>
+where
+    R: std::io::Read,
+    F: FnMut(&[XmlEvent]) -> (),
+{
+    let parser = EventReader::new(input);
+    let mut events = parser.into_iter();
+    match await_start_element(start_element, &mut events)? {
+        None => bail!(r#"End of stream, expected "{}""#, start_element),
+        _ => {}
+    };
+    let mut pkg: Vec<XmlEvent> = Vec::new();
+    loop {
+        if let Some(pkgevent) = await_start_element("package", &mut events)? {
+            if pkg.len() > 0 {
+                f(&pkg[..]);
+                pkg.clear();
             }
-            _ => (),
+            pkg.push(pkgevent);
+        } else {
+            break;
         }
     }
 
     Ok(())
+}
+
+fn repodata_item_path<P: AsRef<Path>>(
+    srcp: P,
+    href: &str,
+) -> Result<Box<std::path::PathBuf>, Error> {
+    let srcp = srcp.as_ref();
+    if let Some(path) = href.rsplit('/').next() {
+        Ok(Box::new(srcp.clone().join(path)))
+    } else {
+        bail!("Invalid href: \"{}\"", href)
+    }
+}
+
+fn process(name: &str, srcp: &Path, r: &RepoDataItem) -> Result<(), Error> {
+    let path = repodata_item_path(srcp, &r.location.href)?;
+    let inf = std::fs::File::open(*path)?;
+    let inf = io::BufReader::new(inf);
+    xml_package_stream_map(name, inf, &mut |v| eprintln!("{:?}", v))
 }
 
 fn run(srcdir: &str, destdir: &str) -> Result<(), Error> {
@@ -87,16 +91,11 @@ fn run(srcdir: &str, destdir: &str) -> Result<(), Error> {
     let repodata_in = io::BufReader::new(repodata_in);
     let repomd: RepoMD = serde_xml_rs::deserialize(repodata_in)?;
     eprintln!("{:?}", repomd);
+
     for v in &repomd.data {
         match v.repodatatype.as_str() {
-            "filelists" => {
-                if let Some(filelist_path) = v.location.href.rsplit('/').next() {
-                    let filelist_path = srcp.clone().join(filelist_path);
-                    filter_filelists(&filelist_path, &dest_repodatap)?
-                } else {
-                    bail!("Invalid filelists href \"{}\"", v.location.href);
-                }
-            }
+            "filelists" => process("filelists", &srcp, v)?,
+            "primary" => process("metadata", &srcp, v)?,
             _ => {}
         }
     }

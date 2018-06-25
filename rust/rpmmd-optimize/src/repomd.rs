@@ -30,11 +30,33 @@ pub struct PackageVersion {
     pub rel: String,
 }
 
-#[allow(dead_code)]
+#[derive(Debug, Deserialize)]
 pub struct PackageId {
     pub name: String,
     pub epoch: u32,
     pub ver: String,
     pub rel: String,
     pub arch: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct PackageTime {
+    pub file: u64,
+    pub build: u64,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct PackageSize {
+    pub file: u64,
+    pub build: u64,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Package {
+    pub name: String,
+    pub arch: String,
+    pub version: PackageVersion,
+    pub summary: String,
+    pub description: String,
+    pub url: String,
 }
