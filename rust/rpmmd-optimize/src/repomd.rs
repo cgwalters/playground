@@ -36,15 +36,6 @@ pub struct PackageVersion {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct PackageId {
-    pub name: String,
-    pub epoch: u32,
-    pub ver: String,
-    pub rel: String,
-    pub arch: String,
-}
-
-#[derive(Debug, Deserialize)]
 pub struct PackageTime {
     pub file: u64,
     pub build: u64,
@@ -85,13 +76,16 @@ where
     Ok(None)
 }
 
+#[derive(Debug)]
+pub struct PackageXml(Vec<XmlEvent>);
+
 // Both primary.xml and filelists.xml have an outer container element, then are
 // just an array of <package>.  Invoke a callback for each <package> element, gathering
 // a Vec of its elements.
 pub fn xml_package_stream_map<R, F>(start_element: &str, input: R, f: &mut F) -> Result<(), Error>
 where
     R: std::io::Read,
-    F: FnMut(&[XmlEvent]) -> (),
+    F: FnMut(PackageXml) -> (),
 {
     let parser = EventReader::new(input);
     let mut events = parser.into_iter();
@@ -103,8 +97,8 @@ where
     loop {
         if let Some(pkgevent) = await_start_element("package", &mut events)? {
             if pkg.len() > 0 {
-                f(&pkg[..]);
-                pkg.clear();
+                f(PackageXml(pkg));
+                pkg = Vec::new();
             }
             pkg.push(pkgevent);
         } else {

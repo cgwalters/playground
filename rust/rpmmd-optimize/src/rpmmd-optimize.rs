@@ -16,6 +16,29 @@ use clap::{App, Arg};
 mod repomd;
 use repomd::*;
 
+#[derive(PartialEq, Eq, Hash)]
+pub struct PackageId {
+    pub name: String,
+    pub epoch: u32,
+    pub ver: String,
+    pub rel: String,
+    pub arch: String,
+}
+
+impl PackageId {
+    fn new(name: &str, epoch: u32, ver: &str, rel: &str, arch: &str) -> PackageId {
+        PackageId { name: name.to_string(),
+                    epoch: epoch,
+                    ver: ver.to_string(),
+                    rel: rel.to_string(),
+                    arch: arch.to_string(), }
+    }
+}
+
+// struct PrimaryMd {
+//     packages: Hashmap<PackageId, >
+// }
+
 fn repodata_item_path<P: AsRef<Path>>(
     srcp: P,
     href: &str,
