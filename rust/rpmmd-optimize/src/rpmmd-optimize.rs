@@ -6,60 +6,15 @@ extern crate serde_xml_rs;
 #[macro_use]
 extern crate serde_derive;
 
-use failure::{err_msg, Error};
+use failure::Error;
 use std::io;
 use std::path::Path;
 
 use clap::{App, Arg};
-use xml::reader::{EventReader, XmlEvent};
-use xml::writer::EmitterConfig;
+//use xml::writer::EmitterConfig;
 
 mod repomd;
 use repomd::*;
-
-fn await_start_element<I>(start_element: &str, events: &mut I) -> Result<Option<XmlEvent>, Error>
-where
-    I: Iterator<Item = Result<XmlEvent, xml::reader::Error>>,
-{
-    for event in events {
-        let event = event?;
-        let matches = match &event {
-            XmlEvent::StartElement { name, .. } => &name.local_name[..] == start_element,
-            _ => false,
-        };
-        if matches {
-            return Ok(Some(event));
-        }
-    }
-    Ok(None)
-}
-
-fn xml_package_stream_map<R, F>(start_element: &str, input: R, f: &mut F) -> Result<(), Error>
-where
-    R: std::io::Read,
-    F: FnMut(&[XmlEvent]) -> (),
-{
-    let parser = EventReader::new(input);
-    let mut events = parser.into_iter();
-    match await_start_element(start_element, &mut events)? {
-        None => bail!(r#"End of stream, expected "{}""#, start_element),
-        _ => {}
-    };
-    let mut pkg: Vec<XmlEvent> = Vec::new();
-    loop {
-        if let Some(pkgevent) = await_start_element("package", &mut events)? {
-            if pkg.len() > 0 {
-                f(&pkg[..]);
-                pkg.clear();
-            }
-            pkg.push(pkgevent);
-        } else {
-            break;
-        }
-    }
-
-    Ok(())
-}
 
 fn repodata_item_path<P: AsRef<Path>>(
     srcp: P,
