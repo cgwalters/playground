@@ -1,0 +1,26 @@
+# Colin's example kickstart for Fedora Atomic Host that 
+# sets up a split / and /var with XFS reflink=1 enabled,
+# both ssh and password, and passwordless sudo.
+lang en_US.UTF-8
+keyboard us
+timezone America/New_York
+zerombr
+clearpart --all --initlabel --disklabel=gpt
+reqpart --add-boot
+part pv.01 --grow
+volgroup vg0 pv.01
+logvol / --size=3000 --fstype="xfs" --mkfsoptions="-m reflink=1" --name=root --vgname=vg0
+logvol /var --size=3000 --grow --fstype="xfs" --mkfsoptions="-m reflink=1" --name=var --vgname=vg0
+# sudo user with an ssh key (use your key)
+user --name=walters --groups=wheel --password "@PASSWORD@"
+sshkey --username walters "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOQkQHeKan3X+g1jILw4a3KtcfEIED0kByKGWookU7ev walters+2015-general@verbum.org"
+
+# Install from the ISO media
+ostreesetup --osname="fedora-atomic" --remote="fedora-atomic" --url="file:///ostree/repo" --ref="fedora/28/x86_64/atomic-host" --nogpg
+
+reboot
+
+%post --erroronfail
+sed -i 's,Defaults\\s*requiretty,Defaults !requiretty,' /etc/sudoers
+echo '%wheel ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/wheel-nopasswd
+%end
