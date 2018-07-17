@@ -21,6 +21,8 @@ ostreesetup --osname="fedora-atomic" --remote="fedora-atomic" --url="file:///ost
 reboot
 
 %post --erroronfail
+ostree remote delete fedora-atomic
+ostree remote add --set=gpg-verify=true --set=gpgkeypath=/etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-28-primary fedora-atomic 'https://kojipkgs.fedoraproject.org/atomic/repo/'
 sed -i 's,Defaults\\s*requiretty,Defaults !requiretty,' /etc/sudoers
 echo '%wheel ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/wheel-nopasswd
 %end
