@@ -1,0 +1,96 @@
+#!/bin/bash
+# Forked from https://github.com/coreos/scripts/blob/master/build_library/qemu_template.sh
+# Changed to have command line arguments, drop non-x86_64/non-KVM support
+# Automatically uses `-snapshot` if the target disk isn't writable
+# Uses -nographic by default, and most importantly, contains a default
+# Ignition config that auto-logins on the console
+
+set -euo pipefail
+
+VM_DISK=
+VM_MEMORY=2048
+VM_NCPUS="${VM_NCPUS:-$(nproc)}"
+SSH_PORT=${SSH_PORT:-}
+USAGE="Usage: $0 /path/to/disk.qcow2 [--] [qemu options...]
+Options:
+    -d DISK     Root disk drive (if not writable, will be transient)
+    -i FILE     File containing an Ignition config
+    -m MB       RAM size in MB (2048)
+    -p PORT     The port on localhost to map to the VM's sshd. [2222]
+    -h          this ;-)
+
+This script is a wrapper around qemu for starting CoreOS virtual machines,
+it will auto-log you into the console, and by default for read-only disk
+images makes a transient snapshot.
+
+Any arguments after -a and -p will be passed through to qemu, -- may be
+used as an explicit separator. See the qemu(1) man page for more details.
+"
+
+die(){
+	echo "${1}" 1>&2
+	exit 1
+}
+
+while [ $# -ge 1 ]; do
+    case "$1" in
+        -d)
+            VM_DISK="$2"
+            shift 2 ;;
+        -i|-ignition-config)
+            IGNITION_CONFIG_FILE="$2"
+            shift 2 ;;
+        -m)
+            VM_MEMORY="$2"
+            shift 2 ;;
+        -p|-ssh-port)
+            SSH_PORT="$2"
+            shift 2 ;;
+        -v|-verbose)
+            set -x
+            shift ;;
+        -h|-help|--help)
+            echo "$USAGE"
+            exit ;;
+        --)
+            shift
+            break ;;
+        *)
+            break ;;
+    esac
+done
+
+if [ -z "${VM_DISK}" ]; then
+    die "-d is required"
+fi
+
+# Emulate the host CPU closely in both features and cores.
+set -- -machine accel=kvm -cpu host -smp "${VM_NCPUS}" "$@"
+
+if [ -z "${IGNITION_CONFIG_FILE:-}" ]; then
+    f=$(mktemp)
+    cat > ${f} <<EOF
+{"ignition": {"config": {}, "security": {"tls": {}}, "timeouts": {}, "version": "2.2.0"}, "networkd": {}, "passwd": {"users": [{"groups": ["sudo"], "name": "core"}]}, "storage": {}, "systemd": {"units": [{"name": "serial-getty@ttyS0.service", "dropins": [{"name": "autologin-core.conf", "contents": "[Service]\nTTYVTDisallocate=no\nExecStart=\nExecStart=-/usr/sbin/agetty --autologin core --noclear %I \$TERM\n"}]}]}}
+EOF
+    exec 3<>${f}
+    rm -f ${f}
+    IGNITION_CONFIG_FILE=/proc/self/fd/3
+fi
+set -- -fw_cfg name=opt/com.coreos/config,file="${IGNITION_CONFIG_FILE}" "$@"
+
+if [ -n "${SSH_PORT}" ]; then
+   hostfwd=",hostfwd=tcp::"${SSH_PORT}"-:22"
+fi
+
+if ! [ -w "${VM_DISK}" ]; then
+    set -- -snapshot "$@"
+    vm_drive_args=",cache=unsafe"
+fi
+
+set -- -drive if=virtio,file=${VM_DISK}${vm_drive_args} "$@"
+
+exec qemu-kvm -name coreos -m ${VM_MEMORY} -nographic \
+              -netdev user,id=eth0,hostname=coreos${hostfwd:-} \
+              -device virtio-net-pci,netdev=eth0 \
+              -object rng-random,filename=/dev/urandom,id=rng0 -device virtio-rng-pci,rng=rng0 \
+              "$@"
