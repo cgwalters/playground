@@ -9,11 +9,13 @@ set -euo pipefail
 
 VM_DISK=
 VM_MEMORY=2048
+VM_PERSIST=0
 VM_NCPUS="${VM_NCPUS:-$(nproc)}"
 SSH_PORT=${SSH_PORT:-}
 USAGE="Usage: $0 /path/to/disk.qcow2 [--] [qemu options...]
 Options:
-    -d DISK     Root disk drive (if not writable, will be transient)
+    -d DISK     Root disk drive (won't be changed by default)
+    --persist   Don't create a temporary snapshot
     -i FILE     File containing an Ignition config
     -m MB       RAM size in MB (2048)
     -p PORT     The port on localhost to map to the VM's sshd. [2222]
@@ -37,6 +39,9 @@ while [ $# -ge 1 ]; do
         -d)
             VM_DISK="$2"
             shift 2 ;;
+        --persist)
+            VM_PERSIST=1
+            shift 1 ;;
         -i|-ignition-config)
             IGNITION_CONFIG_FILE="$2"
             shift 2 ;;
@@ -82,12 +87,12 @@ if [ -n "${SSH_PORT}" ]; then
    hostfwd=",hostfwd=tcp::"${SSH_PORT}"-:22"
 fi
 
-if ! [ -w "${VM_DISK}" ]; then
+if [ "${VM_PERSIST}" = 0 ]; then
     set -- -snapshot "$@"
     vm_drive_args=",cache=unsafe"
 fi
 
-set -- -drive if=virtio,file=${VM_DISK}${vm_drive_args} "$@"
+set -- -drive if=virtio,file=${VM_DISK}${vm_drive_args:-} "$@"
 
 exec qemu-kvm -name coreos -m ${VM_MEMORY} -nographic \
               -netdev user,id=eth0,hostname=coreos${hostfwd:-} \
