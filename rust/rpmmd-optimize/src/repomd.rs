@@ -77,7 +77,7 @@ where
 }
 
 #[derive(Debug)]
-pub struct PackageXml(Vec<XmlEvent>);
+pub struct PackageXml(pub Vec<XmlEvent>);
 
 // Both primary.xml and filelists.xml have an outer container element, then are
 // just an array of <package>.  Invoke a callback for each <package> element, gathering

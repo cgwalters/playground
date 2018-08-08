@@ -7,7 +7,7 @@ extern crate serde_xml_rs;
 extern crate serde_derive;
 
 use failure::Error;
-use std::io;
+use std::{io, collections::HashMap};
 use std::path::Path;
 
 use clap::{App, Arg};
@@ -35,9 +35,15 @@ impl PackageId {
     }
 }
 
-// struct PrimaryMd {
-//     packages: Hashmap<PackageId, >
-// }
+struct PrimaryMd {
+    packages: HashMap<PackageId, PackageXml>,
+}
+
+impl PrimaryMd {
+    fn new() -> Self {
+        PrimaryMd { packages: HashMap::new() }
+    }
+}
 
 fn repodata_item_path<P: AsRef<Path>>(
     srcp: P,
@@ -51,11 +57,23 @@ fn repodata_item_path<P: AsRef<Path>>(
     }
 }
 
-fn process(name: &str, srcp: &Path, r: &RepoDataItem) -> Result<(), Error> {
+fn process_filelists(name: &str, srcp: &Path, r: &RepoDataItem) -> Result<(), Error> {
     let path = repodata_item_path(srcp, &r.location.href)?;
     let inf = std::fs::File::open(*path)?;
     let inf = io::BufReader::new(inf);
     xml_package_stream_map(name, inf, &mut |v| eprintln!("{:?}", v))
+}
+
+fn process_primary(name: &str, srcp: &Path, r: &RepoDataItem) -> Result<(), Error> {
+    let path = repodata_item_path(srcp, &r.location.href)?;
+    let inf = std::fs::File::open(*path)?;
+    let inf = io::BufReader::new(inf);
+    let mut primarymd = PrimaryMd::new();
+    xml_package_stream_map(name, inf, &mut |pkg| {
+        for elt in pkg.0 {
+            eprintln!("{:?}", elt);
+        }
+    })
 }
 
 fn run(srcdir: &str, destdir: &str) -> Result<(), Error> {
@@ -72,8 +90,8 @@ fn run(srcdir: &str, destdir: &str) -> Result<(), Error> {
 
     for v in &repomd.data {
         match v.repodatatype.as_str() {
-            "filelists" => process("filelists", &srcp, v)?,
-            "primary" => process("metadata", &srcp, v)?,
+            "filelists" => process_filelists("filelists", &srcp, v)?,
+            "primary" => process_primary("metadata", &srcp, v)?,
             _ => {}
         }
     }
