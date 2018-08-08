@@ -43,6 +43,9 @@ struct SkopeoInspect {
     labels: BTreeMap<String, String>,
 }
 
+#[derive(Serialize, Debug)]
+struct ContainerToOstree(BTreeMap<String, Option<String>>);
+
 fn run(imagestream: &str) -> Result<(), Error> {
     let oc_get = Command::new("oc")
         .stdout(Stdio::piped())
@@ -51,7 +54,7 @@ fn run(imagestream: &str) -> Result<(), Error> {
     let json_in = oc_get.stdout.unwrap();
     let is : ImageStream = serde_json::from_reader(json_in)?;
 
-    let oscontainer_to_ostree : BTreeMap<String, String> = BTreeMap::new();
+    let mut oscontainer_to_ostree  = ContainerToOstree(BTreeMap::new());
 
     let private_base = &is.status.docker_image_repository;
     let public_base = &is.status.public_docker_image_repository;
@@ -67,8 +70,12 @@ fn run(imagestream: &str) -> Result<(), Error> {
             let skopeo_in = skopeo_proc.stdout.unwrap();
             let inspect : SkopeoInspect = serde_json::from_reader(skopeo_in)?;
             let ostree_hash = inspect.labels.get("io.openshift.os-commit");
-            println!("{} {:?}", public_ref, ostree_hash);
+            oscontainer_to_ostree.0.insert(public_ref.clone(), ostree_hash.map(Clone::clone));
         }
+    }
+    { let stdout = std::io::stdout();
+      let mut handle = stdout.lock();
+      serde_json::to_writer_pretty(handle, &oscontainer_to_ostree);
     }
     Ok(())
 }
