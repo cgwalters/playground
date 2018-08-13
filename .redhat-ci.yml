@@ -8,7 +8,10 @@ required: true
 container:
     image: fedora:25
 
+packages:
+  - git
+
 tests:
-    - test '!' -f broken.txt
+    - ./ci/ci-commitmessage-submodules.sh
 
 timeout: 30m
