@@ -1,0 +1,13 @@
+[package]
+name = "okd-scrape-pod-logs"
+version = "0.1.0"
+authors = ["Colin Walters <walters@verbum.org>"]
+edition = "2018"
+
+[dependencies]
+clap = "~2.28"
+failure = "0.1.1"
+reqwest = "0.9.9"
+url = "1.7.2"
+regex = "1.1.0"
+lazy_static = "1.2.0"
