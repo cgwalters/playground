@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  name: walters-debug-shell
+spec:
+  containers:
+  - command:
+    - /bin/sh
+    image: registry.access.redhat.com/ubi8/ubi
+    name: container-00
+    resources: {}
+    securityContext:
+      privileged: true
+      runAsUser: 0
+    stdin: true
+    stdinOnce: true
+    tty: true
+    volumeMounts:
+    - mountPath: /host
+      name: host
+  hostNetwork: true
+  hostPID: true
+  nodeName: ip-10-0-138-126.us-east-2.compute.internal
+  restartPolicy: Never
+  volumes:
+  - hostPath:
+      path: /
+      type: Directory
+    name: host
+

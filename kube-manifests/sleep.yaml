@@ -1,0 +1,30 @@
+{
+  "kind": "Pod",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "sleep",
+    "creationTimestamp": null,
+    "labels": {
+      "name": "sleep"
+    }
+  },
+  "spec": {
+    "containers": [
+      {
+        "name": "sleep",
+        "image": "registry.fedoraproject.org/fedora:29",
+        "resources": {
+          "requests": {
+              "devices.kubevirt.io/kvm": "1"
+          },
+          "limits": {
+              "devices.kubevirt.io/kvm": "1"
+          }
+        },
+        "terminationMessagePath": "/dev/termination-log",
+        "imagePullPolicy": "IfNotPresent"
+      }
+    ],
+    "restartPolicy": "Never"
+  }
+}

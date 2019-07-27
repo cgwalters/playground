@@ -9,20 +9,31 @@ extern crate lazy_static;
 
 lazy_static! {
     static ref PR_RE: Regex = Regex::new(r"/build/([^/]+)/(.+)").unwrap();
+    static ref GCS_BASEURL : Url = Url::parse("https://www.googleapis.com/").unwrap();
 }
 
 fn gcs_get(client: &reqwest::Client, bucket: &str, object: &str) -> Fallible<String> {
-    let baseurl = Url::parse("https://www.googleapis.com/").unwrap();
     let path = format!("storage/v1/b/{}/{}", bucket, object);
-    let url = baseurl.join(&path)?;
+    let url = GCS_BASEURL.join(&path)?;
     (|| {
         client.get(url.as_str()).send()?.text()
     })().map_err(|e|failure::err_msg(e.to_string()))
 }
 
+
+fn gcs_list_bucket(client: &reqwest::Client, bucket: &str, prefix: &str) -> Fallible<Vec<String>> {
+    let path = format!("storage/v1/b/{}/{}", bucket, object);
+    let url = GCS_BASEURL.join(&path)?;
+    let res = (|| {
+        client.get(url.as_str()).send()?.json()
+    })().map_err(|e|failure::err_msg(e.to_string()))
+
+}
+
 fn main() -> Fallible<()> {
     let matches = App::new("okd-scrape-pod-logs")
         .version("0.1")
+        .arg(Arg::with_name("URL").required(true))
         .arg(Arg::with_name("URL").required(true))
         .get_matches();
     let urlstr = matches.value_of("URL").unwrap();
