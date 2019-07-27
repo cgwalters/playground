@@ -1,0 +1,34 @@
+variant: fcos
+version: 1.0.0
+systemd:
+  units:
+    - name: serial-getty@ttyS0.service
+      dropins:
+        - name: autologin.conf
+          contents: |
+            [Service]
+            TTYVTDisallocate=no
+            ExecStart=
+            ExecStart=-/usr/sbin/agetty --autologin core --noclear %I $TERM
+    - name: var.mount
+      enabled: true
+      contents: |
+        [Unit]
+        Before=local-fs.target
+        [Mount]
+        Where=/var
+        What=/dev/disk/by-partlabel/var
+        [Install]
+        WantedBy=local-fs.target
+storage:
+  disks:
+    - device: /dev/sda
+      partitions:
+        label: var
+        number: 0
+  filesystems:
+    - path: /var
+      device: /dev/disk/by-partlabel/var
+      format: xfs
+      wipe_filesystem: true
+      label: var

@@ -1,0 +1,12 @@
+variant: fcos
+version: 1.0.0
+systemd:
+  units:
+    - name: serial-getty@ttyS0.service
+      dropins:
+        - name: autologin.conf
+          contents: |
+            [Service]
+            TTYVTDisallocate=no
+            ExecStart=
+            ExecStart=-/usr/sbin/agetty --autologin core --noclear %I $TERM
