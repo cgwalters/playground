@@ -22,10 +22,11 @@ systemd:
         WantedBy=local-fs.target
 storage:
   disks:
-    - device: /dev/sda
+    - device: /dev/vda
       partitions:
-        label: var
-        number: 0
+        - label: var
+          size_mib: 0
+          number: 0
   filesystems:
     - path: /var
       device: /dev/disk/by-partlabel/var
