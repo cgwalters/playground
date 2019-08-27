@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+
+import os, sys, json, subprocess
+
+def annex_copy(src, destdir):
+    dest = os.path.join(destdir, os.path.basename(src))
+    subprocess.check_call(['cp', '-p', '--remove-destination', '--reflink=auto', src, dest])
+    subprocess.check_call(['git', 'annex', 'add', dest])
+
+def main():
+    cosadir = sys.argv[1]
+    # Verify we're in an annex directory
+    subprocess.check_call(['git', 'annex', 'info'], stdout=subprocess.DEVNULL)
+    cosa_builddir = os.path.join(cosadir, "builds")
+    cosa_buildjson = os.path.join(cosa_builddir, "builds.json")
+    with open(cosa_buildjson) as f:
+        builds_list = json.load(f)
+    builds = builds_list['builds']
+    print(builds)
+    for build in builds:
+        top_buildid = build["id"]
+        for arch in build['arches']:
+            buildid = f'{top_buildid}/{arch}'
+            src_build = os.path.join(cosa_builddir, buildid)
+            src_buildmeta = f"{src_build}/meta.json"
+            dest_buildmeta = f'{buildid}/meta.json'
+            if os.path.isfile(dest_buildmeta) and subprocess.call(['cmp', src_buildmeta, dest_buildmeta], stdout=subprocess.DEVNULL) == 0:
+                print(f"Build {buildid} already imported")
+                continue
+            os.makedirs(buildid, exist_ok=True)
+            for p in os.listdir(src_build):
+                if p == 'meta.json':
+                    continue
+                annex_copy(os.path.join(src_build, p), buildid)
+            annex_copy(src_buildmeta, buildid)
+            print(f"Imported {arch_buildid}")
+    annex_copy(cosa_buildjson, ".")
+
+if __name__ == "__main__":
+    main()
