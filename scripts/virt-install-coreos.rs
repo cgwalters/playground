@@ -8,11 +8,12 @@
 //! [dependencies]
 //! quicli = "0.4"
 //! structopt = "0.2"
-//! commandspec = "0.12.2"
+//! duct = "0.12.0"
 //! ```
 use quicli::prelude::*;
 use structopt::StructOpt;
-use commandspec::{command,execute}; 
+use duct::cmd;
+use std::ffi::{OsString};
 
 #[derive(Debug, StructOpt)]
 struct Opts {
@@ -27,15 +28,23 @@ struct Opts {
     verbosity: Verbosity,
 }
 
-fn main() -> CliResult {
-    let args = Opts::from_args();
-    args.verbosity.setup_env_logger("head")?;
+fn virsh<U, V>(opts: &Opts, args: U) -> duct::Expression
+where
+    U: IntoIterator<Item = V>,
+    V: Into<OsString>,
+{
+    let mut fullargs : Vec<OsString> = Vec::new();
+    if let Some(ref uri) = opts.uri.as_ref() {
+        fullargs.extend(["--connect", uri].into_iter().map(|s|s.into()));
+    }
+    fullargs.extend(args.into_iter().map(|s| s.into()));
+    cmd("virsh", fullargs)
+}
 
-    execute!(
-        r"
-            ls -al {disk}
-        ",
-        disk=args.disk.as_str(),
-    )?;
+fn main() -> CliResult {
+    let opts = Opts::from_args();
+    opts.verbosity.setup_env_logger("head")?;
+
+    virsh(&opts, &[opts.disk.as_str()]).run()?;
     Ok(())
 }
