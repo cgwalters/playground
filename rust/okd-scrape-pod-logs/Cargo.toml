@@ -2,7 +2,6 @@
 name = "okd-scrape-pod-logs"
 version = "0.1.0"
 authors = ["Colin Walters <walters@verbum.org>"]
-edition = "2018"
 
 [dependencies]
 clap = "~2.28"
