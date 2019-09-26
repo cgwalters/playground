@@ -13,12 +13,23 @@
 use quicli::prelude::*;
 use structopt::StructOpt;
 use duct::cmd;
+use std::io;
+use std::process::Command;
+use std::path::Path;
 use std::ffi::{OsString};
 
 #[derive(Debug, StructOpt)]
 struct Opts {
     /// Path to disk image
     disk: String,
+
+    /// Name of VM
+    #[structopt(long = "name")]
+    name: Option<String>,
+
+    /// Libvirt storage pool
+    #[structopt(long = "pool", default_value = "default")]
+    pool: String,
 
     /// The libvirt URI
     #[structopt(short = "c")]
@@ -28,23 +39,40 @@ struct Opts {
     verbosity: Verbosity,
 }
 
-fn virsh<U, V>(opts: &Opts, args: U) -> duct::Expression
-where
-    U: IntoIterator<Item = V>,
-    V: Into<OsString>,
-{
-    let mut fullargs : Vec<OsString> = Vec::new();
-    if let Some(ref uri) = opts.uri.as_ref() {
-        fullargs.extend(["--connect", uri].into_iter().map(|s|s.into()));
+pub(crate) trait CommandRunExt {
+    fn run(&mut self) -> io::Result<()>;
+}
+
+impl CommandRunExt for Command {
+    fn run(&mut self) -> io::Result<()> {
+        let r = self.status()?;
+        if !r.success() {
+            return Err(io::Error::new(io::ErrorKind::Other, format!("Child [{:?}] exited: {}", self, r)));
+        }
+        Ok(())
     }
-    fullargs.extend(args.into_iter().map(|s| s.into()));
-    cmd("virsh", fullargs)
+}
+
+fn virsh(opts: &Opts) -> Command
+{
+    let mut cmd = Command::new("virsh");
+    if let Some(ref uri) = opts.uri.as_ref() {
+        cmd.arg("--connect");
+        cmd.arg(uri);
+    }
+    cmd
 }
 
 fn main() -> CliResult {
     let opts = Opts::from_args();
     opts.verbosity.setup_env_logger("head")?;
 
-    virsh(&opts, &[opts.disk.as_str()]).run()?;
+    let name = opts.name.as_ref().map(|s| s.to_string()).unwrap_or_else(|| {
+        Path::new(opts.disk.as_str()).file_stem().expect("disk name").to_str().unwrap().to_string()
+    });
+
+    let size = std::fs::metadata(opts.disk.as_str())?.len();
+
+    //virsh(&opts).args(&["vol-create-as", "--pool"]).arg(opts.pool.as_str()).arg(opts.disk.as_str()).run()?;
     Ok(())
 }
