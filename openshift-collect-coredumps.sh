@@ -8,7 +8,7 @@ for node in ${nodes}; do
     node=${node##node/}
     oc debug node/${node} -- ls -A /host/var/lib/systemd/coredump > coredumps.txt
     if [ -s coredumps.txt ]; then
-        oc debug node/${node} -- tar -c -C  /host/var/lib/systemd/coredump -f - . > coredumps-${node}.tar
+        oc debug node/${node} -- /bin/sh -c 'chroot /host tar -c -C  /var/lib/systemd/coredump -f - .' > coredumps-${node}.tar
     fi
     rm -f coredumps.txt
 done
