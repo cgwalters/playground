@@ -1,0 +1,43 @@
+{
+  "metadata": {
+    "name": "rendered-master-61764a341438250970e46ed30b03faca",
+    "selfLink": "/apis/machineconfiguration.openshift.io/v1/machineconfigs/rendered-master-61764a341438250970e46ed30b03faca",
+    "uid": "e24ef66c-a612-4e6a-93e4-f53386459a76",
+    "resourceVersion": "3754",
+    "generation": 1,
+    "creationTimestamp": "2019-11-01T19:54:59Z",
+    "annotations": {
+      "machineconfiguration.openshift.io/generated-by-controller-version": "093b7ad7090894e844e0a51d8695d94eb24f7719"
+    },
+    "ownerReferences": [
+      {
+        "apiVersion": "machineconfiguration.openshift.io/v1",
+        "kind": "MachineConfigPool",
+        "name": "master",
+        "uid": "5b8a996e-3f43-48f4-aebe-5d10964c1ef7",
+        "controller": true,
+        "blockOwnerDeletion": true
+      }
+    ]
+  },
+  "spec": {
+    "osImageURL": "quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:210228123c8f7ff9f8aa528c270d7b491be230540e9b71a2fd8eaa894c27a7cf",
+    "config": {
+      "ignition": {
+        "config": {},
+        "security": {
+          "tls": {}
+        },
+        "timeouts": {},
+        "version": "2.2.0"
+      },
+      "networkd": {},
+      "passwd": {},
+      "storage": {},
+      "systemd": {}
+    },
+    "kernelArguments": [],
+    "fips": true
+  }
+}
+
