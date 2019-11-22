@@ -1,0 +1,7 @@
+DEFAULT pxeboot
+TIMEOUT 20
+PROMPT 0
+LABEL pxeboot
+    KERNEL vmlinuz
+    APPEND initrd=initramfs.img ip=dhcp rd.neednet=1 initrd=fedora-coreos-30.20190801.0-installer-initramfs.img console=tty0 console=ttyS0 coreos.inst=yes coreos.inst.install_dev=sda coreos.inst.image_url=http://192.168.1.101:8000/fedora-coreos-30.20190801.0-metal.raw.xz coreos.inst.ignition_url=http://192.168.1.101:8000/config.ign
+IPAPPEND 2
