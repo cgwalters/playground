@@ -5,24 +5,25 @@
   "storage": {
     "disks": [
       {
-        "device": "/dev/nvme0n1",
+        "device": "/dev/nvme1n1",
+        "wipeTable": true,
         "partitions": [
           {
             "label": "containerraid1",
             "number": 0,
-            "start": 16777216,
+            "start": 0,
             "size": 0
           }
         ]
       },
       {
-        "device": "/dev/nvme1n1",
+        "device": "/dev/nvme2n1",
         "wipeTable": true,
         "partitions": [
           {
             "label": "containerraid2",
             "number": 0,
-            "start": 16777216,
+            "start": 0,
             "size": 0
           }
         ]
