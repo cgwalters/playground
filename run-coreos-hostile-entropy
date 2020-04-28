@@ -1,0 +1,8 @@
+#!/bin/bash
+set -euo pipefail
+disk=$1
+shift
+config=$1
+shift
+set -x
+exec qemu-kvm -m 4096 -cpu SandyBridge -drive if=virtio,file=${disk},snapshot=on -fw_cfg name=opt/com.coreos/config,file=${config} "$@"
