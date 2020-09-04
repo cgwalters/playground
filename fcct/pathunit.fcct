@@ -1,0 +1,23 @@
+# Testing a .path unit
+variant: fcos
+version: 1.0.0
+systemd:
+  units:
+    - name: foo.service
+      enabled: false
+      contents: |
+        [Service]
+        Type=oneshot
+        RemainAfterExit=yes
+        ExecStart=/bin/echo hello world
+        [Install]
+        WantedBy=multi-user.target
+    - name: foo.path
+      enabled: true
+      contents: |
+        [Path]
+        PathExistsGlob=/run/foo/*
+        PathChanged=/run/foo
+        MakeDirectory=true
+        [Install]
+        WantedBy=multi-user.target
