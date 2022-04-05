@@ -1,0 +1,19 @@
+name: Test
+
+permissions:
+  actions: read
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: quay.io/coreos-assembler/fcos-buildroot:testing-devel
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run regular tests
+        run: echo regular tests && ls -al
