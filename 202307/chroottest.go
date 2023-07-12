@@ -18,6 +18,14 @@ func run() error {
 	}
 
 	var errs []error
+
+	redhat, err := net.LookupHost("redhat.com")
+	if err != nil {
+		errs = append(errs, err)
+	} else {
+		fmt.Printf("ok redhat %v\n", redhat)
+	}
+
 	localhost, err := net.LookupHost("localhost")
 	if err != nil {
 		errs = append(errs, err)
