@@ -1,0 +1,26 @@
+variant: fcos
+version: 1.4.0
+storage:
+  disks:
+  - device: /dev/disk/by-id/coreos-boot-disk
+    wipe_table: false
+    partitions:
+    - number: 4
+      label: root
+      # Allocate 2.8T for the root
+      size_mib: 2936012.8
+      resize: true
+    - size_mib: 0
+      label: foo
+  filesystems:
+    - device: /dev/disk/by-partlabel/root
+      wipe_filesystem: true
+      format: xfs
+      label: root
+    - path: /var/mnt/foo
+      device: /dev/disk/by-partlabel/foo
+      # We can select the filesystem we'd like.
+      format: xfs
+      # Ask Butane to generate a mount unit for us so that this filesystem
+      # gets mounted in the real root.
+      with_mount_unit: true
