@@ -1,0 +1,4 @@
+FROM quay.io/centos-bootc/centos-bootc-dev:stream9
+COPY etc etc
+COPY usr usr
+RUN dnf -y update ostree && dnf clean all && rm -rf /var/lib/dnf
