@@ -1,4 +1,6 @@
 FROM quay.io/centos-bootc/centos-bootc-dev:stream9
 COPY etc etc
 COPY usr usr
-RUN dnf -y update ostree && dnf clean all && rm -rf /var/lib/dnf
+RUN set -x; dnf -y update ostree bootc && \
+    dnf clean all && rm -vrf /var/{lib,log,cache}/dnf && \
+    rm opt && mkdir /opt && rm /usr/local && mkdir /usr/local
