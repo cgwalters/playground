@@ -1,0 +1,3 @@
+#FROM quay.io/centos-bootc/centos-bootc-dev:stream9
+FROM quay.io/cgwalters/centos-bootc-dev:stream9
+RUN rpm -Uvh https://yum.puppetlabs.com/puppet/el/9/x86_64/puppet-agent-7.27.0-1.el9.x86_64.rpm

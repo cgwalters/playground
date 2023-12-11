@@ -1,6 +1,9 @@
-FROM quay.io/centos-bootc/centos-bootc-dev:stream9
+FROM quay.io/cgwalters/centos-bootc-base-dev:stream9
 COPY etc etc
 COPY usr usr
-RUN set -x; dnf -y update ostree bootc && \
-    dnf clean all && rm -vrf /var/{lib,log,cache}/dnf && \
-    rm opt && mkdir /opt && rm /usr/local && mkdir /usr/local
+# For dracut
+RUN set -x; \
+    kver=$(cd /usr/lib/modules && ls); \
+# dnf -y update ostree bootc && \
+# dnf clean all && rm -vrf /var/{lib,log,cache}/dnf && \
+    dracut -v --no-hostonly -f /usr/lib/modules/$kver/initramfs.img "${kver}"
