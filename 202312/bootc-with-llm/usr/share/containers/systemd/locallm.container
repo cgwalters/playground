@@ -1,0 +1,12 @@
+[Unit]
+Description=Local LLM
+
+[Container]
+Image=quay.io/michaelclifford/locallm:latest
+PublishPort=7868
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

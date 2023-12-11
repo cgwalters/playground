@@ -1,0 +1,4 @@
+FROM quay.io/centos-bootc/centos-bootc-dev:stream9
+# Use https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html
+COPY usr usr
+
